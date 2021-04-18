@@ -56,5 +56,3 @@ plugins:
 
 exclude: 
   - 'README.md' 
-  - 'ndlc.md'
-  - 'pihole.md'
