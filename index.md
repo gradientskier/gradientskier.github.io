@@ -18,12 +18,12 @@ intro:
 
 feature_row:
 
-  - image_path: /assets/johannes-plenio-E-Zuyev2XWo-unsplash.jpg
+  - image_path: /assets/img_unsplash_lightning_1320x880.jpg
     alt: "placeholder image 1"
     title: "Support for Bitcoin and Lightning Network"
     excerpt: "This is some sample content that goes here with **Markdown** formatting."
 
-  - image_path: /assets/s-migaj-b2qszO9C7sw-unsplash.jpg
+  - image_path: /assets/img_unsplash_relax_2500x1667.jpg
     # image_caption: "Image courtesy of [Unsplash](https://unsplash.com/)"
     alt: "placeholder image 2"
     title: "Easy to setup and configure"
@@ -32,12 +32,12 @@ feature_row:
     btn_label: "Read More"
     btn_class: "btn--primary"
 
-  - image_path: /assets/georg-bommeli-ybtUqjybcjE-unsplash.jpg
+  - image_path: /assets/img_unsplash_lock_3000x2000.jpg
     title: "Secured with full disk encryption"
     excerpt: "This is some sample content that goes here with **Markdown** formatting."
 
 feature_row2:
-  - image_path: assets/1_4TSNv0CRB_vobRXRMHhhyg.jpeg
+  - image_path: /assets/img_btcpayserver_logo_1024x512.jpeg
     alt: "placeholder image 2"
     title: "Powered by the awesome btcpayserver..."
     excerpt: 'This is some sample content that goes here with **Markdown** formatting. Left aligned with `type="left"`'
@@ -46,7 +46,7 @@ feature_row2:
     btn_class: "btn--primary"
 
 feature_row3:
-  - image_path: assets/cesar-carlevarino-aragon-NL_DF0Klepc-unsplash.jpg
+  - image_path: /assets/img_unsplash_tools_2736x1539.jpg
     alt: "placeholder image 2"
     title: "...And extended with many other apps"
     excerpt: 'This is some sample content that goes here with **Markdown** formatting. Right aligned with `type="right"`'
@@ -55,7 +55,7 @@ feature_row3:
     btn_class: "btn--primary"
 
 feature_row4:
-  - image_path: /assets/markus-spiske-8OyKWQgBsKQ-unsplash.jpg
+  - image_path: /assets/img_unsplash_source_2880x1920.jpg
     alt: "placeholder image 2"
     title: "Fully open source"
     excerpt: 'This is some sample content that goes here with **Markdown** formatting. Centered with `type="center"`'
