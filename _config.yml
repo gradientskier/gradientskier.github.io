@@ -29,9 +29,8 @@ description: >- # this means to ignore newlines until "baseurl:"
 
 destination: docs
 
+url: "https://gradientskier.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 baseurl: "/btcpayserver-docker" # the subpath of your site, e.g. /blog
-
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
 twitter_username: gradientskier
 

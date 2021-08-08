@@ -11,7 +11,9 @@ header:
     - label: "Get started"
       url: "configure"
   caption: "Photo credit: [**Unsplash**](https://unsplash.com)"
-excerpt: "A Bitcoin node is like an altar to Satoshi in your house <br/> (Michael Saylor, 2021)"
+
+# https://twitter.com/michael_saylor/status/1421806659039637508
+excerpt: "A node is an altar to truth. A wallet is a weapon of freedom. A miner is a motor of sovereignty. (Michael Saylor, 2021)"
 
 intro: 
   - excerpt: 'Nullam suscipit et nam, tellus velit pellentesque at malesuada, enim eaque. Quis nulla, netus tempor in diam gravida tincidunt, *proin faucibus* voluptate felis id sollicitudin. Centered with `type="center"`'

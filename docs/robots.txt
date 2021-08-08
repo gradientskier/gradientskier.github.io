@@ -1,1 +1,1 @@
-Sitemap: http://0.0.0.0:4000/btcpayserver-docker/sitemap.xml
+Sitemap: https://gradientskier.github.io/btcpayserver-docker/sitemap.xml
