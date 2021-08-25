@@ -2,7 +2,7 @@ main:
   - title: "Home"
     url: /
   - title: "Configure"
-    url: /configure/
+    url: /configure_node/
   - title: "Blog"
     url: /blog/
   - title: "About"
