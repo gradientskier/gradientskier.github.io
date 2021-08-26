@@ -9,16 +9,19 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Configure &amp; DIY - YAB Node</title>
+<!-- begin _includes/seo.html --><title>Configure node - YAB Node</title>
 <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
 
+
+  <meta name="author" content="Your Name">
+  
 
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="YAB Node">
-<meta property="og:title" content="Configure &amp; DIY">
-<meta property="og:url" content="https://gradientskier.github.io/btcpayserver-docker/configure/">
+<meta property="og:title" content="Configure node">
+<meta property="og:url" content="https://gradientskier.github.io/btcpayserver-docker/configure_node/">
 
 
   <meta property="og:description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
@@ -34,7 +37,7 @@
 
 
 
-<link rel="canonical" href="https://gradientskier.github.io/btcpayserver-docker/configure/">
+<link rel="canonical" href="https://gradientskier.github.io/btcpayserver-docker/configure_node/">
 
 
 
@@ -83,7 +86,7 @@
 
   </head>
 
-  <body class="layout--single">
+  <body class="layout--single wide">
     <nav class="skip-links">
   <ul>
     <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
@@ -110,7 +113,7 @@
         <ul class="visible-links"><li class="masthead__menu-item">
               <a href="/btcpayserver-docker/">Home</a>
             </li><li class="masthead__menu-item">
-              <a href="/btcpayserver-docker/configure/">Configure</a>
+              <a href="/btcpayserver-docker/configure_node/">Configure</a>
             </li><li class="masthead__menu-item">
               <a href="/btcpayserver-docker/blog/">Blog</a>
             </li><li class="masthead__menu-item">
@@ -135,10 +138,127 @@
 
 <div id="main" role="main">
   
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="http://placehold.it/350x350" alt="Your Name" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Your Name</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>I am an <strong>amazing</strong> person.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Somewhere</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://mademistakes.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Made Mistakes</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/mmistakes" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/mmistakes" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://instagram.com/mmistakes" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-instagram" aria-hidden="true"></i><span class="label">Instagram</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Configure &amp; DIY">
+    <meta itemprop="headline" content="Configure node">
     
     
     
@@ -146,7 +266,7 @@
     <div class="page__inner-wrap">
       
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">Configure &amp; DIY
+          <h1 id="page-title" class="page__title" itemprop="headline">Configure node
 </h1>
           
 
@@ -156,7 +276,24 @@
 
       <section class="page__content" itemprop="text">
         
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> Table of content</h4></header>
+              <ul class="toc__menu"><li><a href="#hardware-requirements">Hardware requirements</a></li><li><a href="#configure-raspberry-pi-to-boot-from-usb">Configure Raspberry Pi to boot from USB</a></li><li><a href="#burn-the-external-usb">Burn the external USB</a></li><li><a href="#run-setup">Run setup</a></li></ul>
+
+            </nav>
+          </aside>
         
+        <h1 id="hardware-requirements">Hardware requirements</h1>
+
+<h1 id="configure-raspberry-pi-to-boot-from-usb">Configure Raspberry Pi to boot from USB</h1>
+
+<h1 id="burn-the-external-usb">Burn the external USB</h1>
+
+<p><a href="/configure_fde">Configure fde</a>.</p>
+
+<h1 id="run-setup">Run setup</h1>
+
 
         
       </section>

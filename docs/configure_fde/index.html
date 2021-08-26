@@ -1,0 +1,733 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Raspberry Pi OS full disk encryption from scratch - YAB Node</title>
+<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+
+
+  <meta name="author" content="Your Name">
+  
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="YAB Node">
+<meta property="og:title" content="Raspberry Pi OS full disk encryption from scratch">
+<meta property="og:url" content="https://gradientskier.github.io/btcpayserver-docker/configure_fde/">
+
+
+  <meta property="og:description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="canonical" href="https://gradientskier.github.io/btcpayserver-docker/configure_fde/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "https://gradientskier.github.io/btcpayserver-docker/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/btcpayserver-docker/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/btcpayserver-docker/">
+          YAB Node
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/btcpayserver-docker/">Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/btcpayserver-docker/configure_node/">Configure</a>
+            </li><li class="masthead__menu-item">
+              <a href="/btcpayserver-docker/blog/">Blog</a>
+            </li><li class="masthead__menu-item">
+              <a href="/btcpayserver-docker/about/">About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="http://placehold.it/350x350" alt="Your Name" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Your Name</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>I am an <strong>amazing</strong> person.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Somewhere</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://mademistakes.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Made Mistakes</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/mmistakes" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/mmistakes" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://instagram.com/mmistakes" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-instagram" aria-hidden="true"></i><span class="label">Instagram</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Raspberry Pi OS full disk encryption from scratch">
+    
+    
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Raspberry Pi OS full disk encryption from scratch
+</h1>
+          
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> Table of content</h4></header>
+              <ul class="toc__menu"><li><a href="#burn-and-boot-rasperry-pi-os">Burn and boot Rasperry Pi Os</a></li><li><a href="#configure-the-new-root-partition">Configure the new root partition</a></li><li><a href="#ensure-the-new-root-partition-is-used-on-boot">Ensure the new root partition is used on boot</a></li><li><a href="#configure-a-kernel-postinst-script">Configure a kernel postinst script</a></li><li><a href="#configure-an-initramfs-hook-for-cryptsetup">Configure an initramfs hook for cryptsetup</a></li><li><a href="#configure-an-initramfs-kernel-modules">Configure an initramfs kernel modules</a></li><li><a href="#build-the-initramfs">Build the initramfs</a></li><li><a href="#cleanup-and-reboot">Cleanup and reboot</a></li><li><a href="#configure-the-operating-system">Configure the operating system</a></li><li><a href="#create-the-operating-system-image">Create the operating system image</a></li><li><a href="#final-notes">Final notes</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h2 id="burn-and-boot-rasperry-pi-os">Burn and boot Rasperry Pi Os</h2>
+
+<p>On a Windows 10 PC:</p>
+<ol>
+  <li>Using Raspberry pi imager, burn Raspberry Pi OS (32 bit) on a target USB drive of 16Gb.</li>
+  <li>Using “Create and format hard disk partitions” functionality of Windows 10, create an empty partition at the end of the just flashed USB drive. This can be done with right click on the unallocated space, new simple volume, next, next, yes, Do not format this volume, next, finish.</li>
+</ol>
+
+<p>In this way, when the Raspberry Pi OS will boot for the first time, it will not be able to expand the filesystem to the whole drive. Now you can boot Raspberry Pi OS from the USB. You will see an error saying “Could not expand filesystem” this is OKAY, proceed. Perform the initial configuration, setup the wifi, skip the update for now, enable SSH server. Now you will be able to connect via SSH to the Pi.</p>
+
+<h2 id="configure-the-new-root-partition">Configure the new root partition</h2>
+
+<p>Open a terminal in the Pi, and install the cryptsetup utility, which we will use to encrypt the partitions.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pi@hostname:~<span class="nv">$ </span>ssh pi@...
+pi@hostname:~<span class="nv">$ </span><span class="nb">sudo </span>su -
+root@hostname:/home/pi# apt <span class="nb">install </span>cryptsetup
+</code></pre></div></div>
+
+<p>If you list the partitions of the USB drive (sda) you should see three partitions, the first one (sda1) is used for boot, the second one (sda2) contains the operating system, and the third one (sda3) is an empty partition.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@hostname:/home/pi# fdisk <span class="nt">-l</span>
+/dev/sda1          8192   532479   524288  256M  c W95 FAT32 <span class="o">(</span>LBA<span class="o">)</span>
+/dev/sda2        532480  7774207  7241728  3.5G 83 Linux
+/dev/sda3       7774208 30031871 22257664 10.6G 83 Linux
+</code></pre></div></div>
+
+<p>Encrypt and format sda3.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@hostname:/home/pi# cryptsetup <span class="nt">-v</span> luksFormat <span class="nt">-c</span> xchacha20,aes-adiantum-plain64 /dev/sda3
+root@hostname:/home/pi# cryptsetup <span class="nt">-v</span> luksOpen /dev/sda3 sda3_crypt
+root@hostname:/home/pi# mkfs <span class="nt">-t</span> ext4 /dev/mapper/sda3_crypt 
+</code></pre></div></div>
+
+<p>Copy files from the original root (sda2) to the new encrypted root partition (sda3).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@hostname:/home/pi# <span class="nb">mkdir</span> <span class="nt">-p</span> /mnt/newroot
+root@hostname:/home/pi# mount /dev/mapper/sda3_crypt /mnt/newroot
+root@hostname:/home/pi# <span class="nb">sudo mkdir</span> <span class="nt">-p</span> /mnt/oldroot
+root@hostname:/home/pi# <span class="nb">sudo </span>mount /dev/sda2 /mnt/oldroot
+root@hostname:/home/pi# rsync <span class="nt">-avhP</span> /mnt/oldroot/ /mnt/newroot/
+root@hostname:/home/pi# <span class="nb">sync</span> <span class="o">&amp;&amp;</span> <span class="nb">sync</span>
+</code></pre></div></div>
+
+<h2 id="ensure-the-new-root-partition-is-used-on-boot">Ensure the new root partition is used on boot</h2>
+
+<p>Using blkid, keep note of the luks and ext4 partition UUID</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@hostname:/home/pi# blkid
+/dev/sda1: <span class="nv">LABEL_FATBOOT</span><span class="o">=</span><span class="s2">"boot"</span> <span class="nv">LABEL</span><span class="o">=</span><span class="s2">"boot"</span> <span class="nv">UUID</span><span class="o">=</span><span class="s2">"7616-4FD8"</span> <span class="nv">TYPE</span><span class="o">=</span><span class="s2">"vfat"</span> <span class="nv">PARTUUID</span><span class="o">=</span><span class="s2">"f4481065-01"</span>
+/dev/sda2: <span class="nv">LABEL</span><span class="o">=</span><span class="s2">"rootfs"</span> <span class="nv">UUID</span><span class="o">=</span><span class="s2">"87b585d1-84c3-486a-8f3d-77cf16f84f30"</span> <span class="nv">TYPE</span><span class="o">=</span><span class="s2">"ext4"</span> <span class="nv">PARTUUID</span><span class="o">=</span><span class="s2">"f4481065-02"</span>
+/dev/sda3: <span class="nv">UUID</span><span class="o">=</span><span class="s2">"2a78c011-94b0-4127-8c4d-927bf39ca018"</span> <span class="nv">TYPE</span><span class="o">=</span><span class="s2">"crypto_LUKS"</span> <span class="nv">PARTUUID</span><span class="o">=</span><span class="s2">"f4481065-03"</span>
+/dev/mapper/sda3_crypt: <span class="nv">UUID</span><span class="o">=</span><span class="s2">"73194a05-ac76-4218-b5db-6e4117bae75e"</span> <span class="nv">TYPE</span><span class="o">=</span><span class="s2">"ext4"</span>
+</code></pre></div></div>
+
+<p>Edit crypttab file to decrypt sda3 using user provided password. Be careful in using the UUID of /dev/sda3.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@hostname:/home/pi# nano /mnt/newroot/etc/crypttab
+
+<span class="c"># new line:</span>
+sda3_crypt <span class="nv">UUID</span><span class="o">=</span>2a78c011-94b0-4127-8c4d-927bf39ca018 none luks
+</code></pre></div></div>
+
+<p>Edit the fstab file, to mount the partition on boot. Replace the line with / with the new line using sda3_crypt.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@hostname:/home/pi# nano /mnt/newroot/etc/fstab
+
+<span class="c"># new line to replace:</span>
+/dev/mapper/sda3_crypt   /            ext4    defaults,noatime  0       1
+</code></pre></div></div>
+
+<p>Change /boot/cmdline.txt, check the PARTUUID value.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@hostname:/home/pi# <span class="nb">cp</span> /boot/cmdline.txt /boot/cmdline.txt.normal
+root@hostname:/home/pi# nano /boot/cmdline.txt
+
+<span class="c"># new line to replace:</span>
+<span class="nv">console</span><span class="o">=</span>serial0,115200 <span class="nv">console</span><span class="o">=</span>tty1 <span class="nv">root</span><span class="o">=</span>/dev/mapper/sda3_crypt <span class="nv">rootfstype</span><span class="o">=</span>ext4 <span class="nv">elevator</span><span class="o">=</span>deadline fsck.repair<span class="o">=</span><span class="nb">yes </span>rootwait quiet plymouth.ignore-serial-consoles <span class="nv">cryptdevice</span><span class="o">=</span><span class="nv">PARTUUID</span><span class="o">=</span><span class="s2">"f4481065-03"</span>:sda3_crypt
+</code></pre></div></div>
+
+<p>Change /boot/config.txt, by appending the new line at the end of the file</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nano /boot/config.txt
+
+<span class="c"># new line to insert at the end:</span>
+initramfs initramfs.gz followkernel
+</code></pre></div></div>
+
+<h2 id="configure-a-kernel-postinst-script">Configure a kernel postinst script</h2>
+
+<p>Create a new kernel post install script, so that the initiramfs is updated upon kernel update.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@hostname:/home/pi# nano /etc/kernel/postinst.d/initramfs-rebuild
+</code></pre></div></div>
+
+<p>The content being the following script.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/sh -e</span>
+
+<span class="c"># Rebuild initramfs.gz after kernel upgrade to include new kernel's modules.</span>
+<span class="c"># https://github.com/Robpol86/robpol86.com/blob/master/docs/_static/initramfs-rebuild.sh</span>
+<span class="c"># Save as (chmod +x): /etc/kernel/postinst.d/initramfs-rebuild</span>
+
+<span class="c"># Remove splash from cmdline.</span>
+<span class="k">if </span><span class="nb">grep</span> <span class="nt">-q</span> <span class="s1">'\bsplash\b'</span> /boot/cmdline.txt<span class="p">;</span> <span class="k">then
+  </span><span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s/ \?splash \?/ /'</span> /boot/cmdline.txt
+<span class="k">fi</span>
+
+<span class="c"># Exit if not building kernel for this Raspberry Pi's hardware version.</span>
+<span class="nv">version</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+<span class="nv">current_version</span><span class="o">=</span><span class="s2">"</span><span class="si">$(</span><span class="nb">uname</span> <span class="nt">-r</span><span class="si">)</span><span class="s2">"</span>
+<span class="k">case</span> <span class="s2">"</span><span class="k">${</span><span class="nv">current_version</span><span class="k">}</span><span class="s2">"</span> <span class="k">in</span>
+  <span class="k">*</span><span class="nt">-v7</span>+<span class="p">)</span>
+    <span class="k">case</span> <span class="s2">"</span><span class="k">${</span><span class="nv">version</span><span class="k">}</span><span class="s2">"</span> <span class="k">in</span>
+      <span class="k">*</span><span class="nt">-v7</span>+<span class="p">)</span> <span class="p">;;</span>
+      <span class="k">*</span><span class="p">)</span> <span class="nb">exit </span>0
+    <span class="k">esac</span>
+  <span class="p">;;</span>
+  <span class="k">*</span><span class="nt">-v7l</span>+<span class="p">)</span>
+    <span class="k">case</span> <span class="s2">"</span><span class="k">${</span><span class="nv">version</span><span class="k">}</span><span class="s2">"</span> <span class="k">in</span>
+      <span class="k">*</span><span class="nt">-v7l</span>+<span class="p">)</span> <span class="p">;;</span>
+      <span class="k">*</span><span class="p">)</span> <span class="nb">exit </span>0
+    <span class="k">esac</span>
+  <span class="p">;;</span>
+  <span class="k">*</span><span class="nt">-v8</span>+<span class="p">)</span>
+    <span class="k">case</span> <span class="s2">"</span><span class="k">${</span><span class="nv">version</span><span class="k">}</span><span class="s2">"</span> <span class="k">in</span>
+      <span class="k">*</span><span class="nt">-v8</span>+<span class="p">)</span> <span class="p">;;</span>
+      <span class="k">*</span><span class="p">)</span> <span class="nb">exit </span>0
+    <span class="k">esac</span>
+  <span class="p">;;</span>
+  <span class="k">*</span>+<span class="p">)</span>
+    <span class="k">case</span> <span class="s2">"</span><span class="k">${</span><span class="nv">version</span><span class="k">}</span><span class="s2">"</span> <span class="k">in</span>
+      <span class="k">*</span><span class="nt">-v7</span>+<span class="p">)</span> <span class="nb">exit </span>0 <span class="p">;;</span>
+      <span class="k">*</span><span class="nt">-v7l</span>+<span class="p">)</span> <span class="nb">exit </span>0 <span class="p">;;</span>
+      <span class="k">*</span><span class="nt">-v8</span>+<span class="p">)</span> <span class="nb">exit </span>0 <span class="p">;;</span>
+    <span class="k">esac</span>
+  <span class="p">;;</span>
+<span class="k">esac</span>
+
+<span class="c"># Exit if rebuild cannot be performed or not needed.</span>
+<span class="o">[</span> <span class="nt">-x</span> /usr/sbin/mkinitramfs <span class="o">]</span> <span class="o">||</span> <span class="nb">exit </span>0
+<span class="o">[</span> <span class="nt">-f</span> /boot/initramfs.gz <span class="o">]</span> <span class="o">||</span> <span class="nb">exit </span>0
+lsinitramfs /boot/initramfs.gz | <span class="nb">grep</span> <span class="nt">-q</span> <span class="s2">"/</span><span class="nv">$version</span><span class="s2">$"</span> <span class="o">&amp;&amp;</span> <span class="nb">exit </span>0  <span class="c"># Already in initramfs.</span>
+
+<span class="c"># Rebuild.</span>
+mkinitramfs <span class="nt">-o</span> /boot/initramfs.gz <span class="s2">"</span><span class="nv">$version</span><span class="s2">"</span>
+</code></pre></div></div>
+
+<p>Update the permissions to make the file executable and copy to new partition.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@hostname:/home/pi# <span class="nb">chmod</span> +x /etc/kernel/postinst.d/initramfs-rebuild
+root@hostname:/home/pi# <span class="nb">cp</span> /etc/kernel/postinst.d/initramfs-rebuild /mnt/newroot/etc/kernel/postinst.d/initramfs-rebuild
+</code></pre></div></div>
+
+<h2 id="configure-an-initramfs-hook-for-cryptsetup">Configure an initramfs hook for cryptsetup</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@hostname:/home/pi# nano /etc/initramfs-tools/hooks/luks_hooks
+</code></pre></div></div>
+
+<p>The content being the following.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/sh -e</span>
+<span class="nv">PREREQS</span><span class="o">=</span><span class="s2">""</span>
+<span class="k">case</span> <span class="nv">$1</span> <span class="k">in
+        </span>prereqs<span class="p">)</span> <span class="nb">echo</span> <span class="s2">"</span><span class="k">${</span><span class="nv">PREREQS</span><span class="k">}</span><span class="s2">"</span><span class="p">;</span> <span class="nb">exit </span>0<span class="p">;;</span>
+<span class="k">esac</span>
+
+<span class="nb">.</span> /usr/share/initramfs-tools/hook-functions
+
+copy_exec /sbin/resize2fs /sbin
+copy_exec /sbin/fdisk /sbin
+copy_exec /sbin/cryptsetup /sbin
+</code></pre></div></div>
+
+<p>Update the permissions to make the file executable and copy to new partition.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@hostname:/home/pi# chmod +x /etc/initramfs-tools/hooks/luks_hooks
+root@hostname:/home/pi# cp /etc/initramfs-tools/hooks/luks_hooks /mnt/newroot/etc/initramfs-tools/hooks/luks_hooks
+</code></pre></div></div>
+
+<h2 id="configure-an-initramfs-kernel-modules">Configure an initramfs kernel modules</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@hostname:/home/pi# nano /etc/initramfs-tools/modules
+</code></pre></div></div>
+
+<p>Ensure the following modules are present.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>algif_skcipher
+xchacha20
+adiantum
+aes_arm
+sha256
+nhpoly1305
+dm-crypt
+</code></pre></div></div>
+
+<p>Copy file to new partition.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@hostname:/home/pi# cp /etc/initramfs-tools/modules /mnt/newroot/etc/initramfs-tools/modules
+</code></pre></div></div>
+
+<h2 id="build-the-initramfs">Build the initramfs</h2>
+
+<p>Do not care about warnings generated after the first instruction, because we have CRYPTSETUP=y…</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">CRYPTSETUP</span><span class="o">=</span>y mkinitramfs <span class="nt">-o</span> /boot/initramfs.gz
+reboot
+</code></pre></div></div>
+
+<p>After reboot, it will drop into initramfs, and it’s necessary to unlock the disk by hand.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cryptsetup -v luksOpen /dev/sda3 sda3_crypt
+exit
+</code></pre></div></div>
+
+<p>Now the OS will boot, so it’s possible to SSH again into the Pi. We can build again the initramfs and now there should be no warnings</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo su -
+mkinitramfs -o /boot/initramfs.gz
+</code></pre></div></div>
+
+<h2 id="cleanup-and-reboot">Cleanup and reboot</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo rmdir /mnt/oldroot
+sudo rmdir /mnt/newroot
+reboot
+</code></pre></div></div>
+
+<h2 id="configure-the-operating-system">Configure the operating system</h2>
+
+<p>Then sudo raspi-config</p>
+<ul>
+  <li>install ssh server: raspi-config -&gt; interfaces -&gt; ssh</li>
+  <li>enable desktop boot without autologin: raspi-config -&gt; boot options -&gt; desktop/cli -&gt; Desktop</li>
+  <li>change the hostname: raspi-config -&gt; Network options -&gt; hostname -&gt; btcpay</li>
+</ul>
+
+<p>Do not ask executable files: File manager, Edit, Preferences, General, Check “Do not ask option on executable launch”</p>
+
+<p>Clone the btcpayserver repository.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh pi@...
+
+apt-get purge realvnc-vnc-server
+apt install git xrdp htop
+
+mkdir -p /root/BTCPayNode
+cd /root/BTCPayNode
+git clone https://github.com/gradientskier/btcpayserver-docker.git
+
+nano /home/pi/Desktop/setup.desktop
+</code></pre></div></div>
+
+<p>Insert the following content in the setup icon.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Desktop Entry]
+Version=1.0
+
+Type=Application
+
+Terminal=true
+
+Icon=/usr/share/icons/gnome/256x256/apps/terminal.png
+
+Name=Setup Node
+
+Exec=bash -c 'sudo /root/BTCPayNode/btcpayserver-docker/Tools/rpi-setup-node.sh'
+</code></pre></div></div>
+
+<p>Change permissions for the setup icon.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chown pi:pi /home/pi/Desktop/setup.desktop
+chmod 700 /home/pi/Desktop/setup.desktop
+</code></pre></div></div>
+
+<p>Remove the wifi password</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nano /etc/wpa_supplicant/wpa_supplicant.conf
+# Delete the relevant wifi network block, including the ‘network=’ and opening/closing braces.
+</code></pre></div></div>
+
+<h2 id="create-the-operating-system-image">Create the operating system image</h2>
+
+<p>Now you have a USB drive that boots from the third partition, and there is a second partition in between that can be removed. It’s possible to create an image
+that does not have the second partition in between. We take the USB drive into another linux machine and we create a disk image for the third partition.
+In the example, the USB drive has been mounted as /dev/sdc and the resulting image is saved into another drive at /media/ubuntu/RaspiImages.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt <span class="nb">install </span>pv pigz
+<span class="nb">dd </span><span class="k">if</span><span class="o">=</span>/dev/sdc3 <span class="nv">conv</span><span class="o">=</span><span class="nb">sync</span>,noerror <span class="nv">bs</span><span class="o">=</span>4M | pv <span class="nt">-s</span> 16G | pigz <span class="o">&gt;</span> /media/ubuntu/RaspiImages/2020.07.02-sandisk-16-raspios-crypted-v01-sdc3.gz
+</code></pre></div></div>
+
+<p>After saving an image for sdc3, you can recreate partitions and restore sdc3 upon sdc2. On the 16GB drive, using fdisk, delete partitions 2,3 and recreate partition 2 as partition 2+3. Finally restore partion 3 upon new partition 2</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pigz <span class="nt">-dc</span> /media/ubuntu/RaspiImages/2020.07.02-sandisk-16-raspios-crypted-v01-sdc3.gz | pv <span class="nt">-s</span> 12G | <span class="nb">dd </span><span class="nv">of</span><span class="o">=</span>/dev/sdd2
+</code></pre></div></div>
+
+<p>Using a text editor for /boot/cmdline.txt change the partition that decrypts into sda3_crypt, with same PARTUUID except with 02 at the end.
+Boot from the Raspberry pi and it should work. From the raspi, change accordingly:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nano /etc/fstab
+nano /etc/crypttab
+nano /boot/cmdline.txt
+</code></pre></div></div>
+
+<p>Rebuild initramfs and reboot</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CRYPTSETUP=y mkinitramfs -o /boot/initramfs.gz
+reboot
+</code></pre></div></div>
+
+<p>It will drop (again) into initramfs.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cryptsetup -v luksOpen /dev/sda2 sda2_crypt
+exit
+</code></pre></div></div>
+
+<p>Then rebuild initramfs and reboot</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo su -
+mkinitramfs -o /boot/initramfs.gz
+reboot
+</code></pre></div></div>
+
+<p>If desirable, we need to resize the sda2 crypt.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo su -
+cryptsetup -v luksOpen /dev/sdb2 sdb2_crypt
+cryptsetup resize /dev/mapper/sdb2_crypt
+fsck -f /dev/mapper/sda1_crypt
+resize2fs /dev/mapper/sdb2_crypt
+shutdown
+</code></pre></div></div>
+
+<p>Create the final image into another linux machine. Always check the name of the drive with <code class="language-plaintext highlighter-rouge">fdisk -l</code>, now assuming it’s /dev/sdc</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">dd </span><span class="k">if</span><span class="o">=</span>/dev/sdc <span class="nv">conv</span><span class="o">=</span><span class="nb">sync</span>,noerror <span class="nv">bs</span><span class="o">=</span>4M | pv <span class="nt">-s</span> 16G | pigz <span class="o">&gt;</span> /media/ubuntu/WinMacShare/2020.07.18-sandisk-16-raspios-crypted-v04.gz
+</code></pre></div></div>
+
+<h2 id="final-notes">Final notes</h2>
+
+<p>Performed on kernel 5.10.17-v7l+ on a usb drive</p>
+<ul>
+  <li>initramfs before kernel update: 464 -rwxr-xr-x  1 root root  15M Jun 30 19:08  initramfs-5.10.17-v7l+.gz</li>
+  <li>initramfs after kernel update:</li>
+</ul>
+
+<p>Performed on 4.19.118-v7l+ on a microsd, with a different cypher (aes-xts-plain)</p>
+<ul>
+  <li>initramfs original: 400 -rwxr-xr-x  1 root root 14944793 Jun 30 12:38  initramfs.gz</li>
+  <li>initramfs after kernel update: 400 -rwxr-xr-x  1 root root 15483048 Jun 30 13:01  initramfs.gz</li>
+</ul>
+
+<p>Some useful commands to remember</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># To check the content of initramfs</span>
+lsinitramfs /boot/initramfs.gz | <span class="nb">grep </span>crypt
+
+<span class="c"># To restore an image</span>
+<span class="nb">dd </span><span class="k">if</span><span class="o">=</span>/dev/sdc <span class="nv">conv</span><span class="o">=</span><span class="nb">sync</span>,noerror <span class="nv">bs</span><span class="o">=</span>4M | pv <span class="nt">-s</span> 1000G | <span class="nb">sudo dd </span><span class="nv">of</span><span class="o">=</span>/dev/sdd <span class="nv">bs</span><span class="o">=</span>4M
+</code></pre></div></div>
+
+<p>Some useful links, that helped in the creation of this guide.</p>
+
+<ul>
+  <li>https://mutschler.eu/linux/install-guides/raspi-btrfs/</li>
+  <li>https://rr-developer.github.io/LUKS-on-Raspberry-Pi/</li>
+  <li>https://raspberrypi.stackexchange.com/questions/92557/how-can-i-use-an-init-ramdisk-initramfs-on-boot-up-raspberry-pi</li>
+  <li>https://robpol86.com/raspberry_pi_luks.html</li>
+  <li>https://www.raspberrypi.org/documentation/configuration/config-txt/boot.md</li>
+  <li>https://www.cyberciti.biz/faq/unix-linux-dd-create-make-disk-image-commands/</li>
+  <li>https://unix.stackexchange.com/questions/31669/is-it-possible-to-mount-a-gzip-compressed-dd-image-on-the-fly</li>
+  <li>https://www.raspberrypi.org/forums/viewtopic.php?f=91&amp;t=248380&amp;p=1516491</li>
+  <li>https://virtual-reality-piano.medium.com/how-to-forget-a-saved-wifi-network-on-a-raspberry-pi-4cbbcf53b128</li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+
+
+      </footer>
+
+      
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://github.com/gradientskier" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://twitter.com/gradientskier" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 YAB Node. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/btcpayserver-docker/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
