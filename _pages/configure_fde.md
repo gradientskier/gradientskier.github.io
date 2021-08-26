@@ -1,22 +1,22 @@
 ---
 layout: single
 classes: wide
-title: Raspberry Pi OS Full Disk Encryption from scratch
+title: Raspberry Pi OS full disk encryption from scratch
 permalink: /configure_fde/
-toc: false
+toc: true
 toc_label: "Table of content"
 toc_icon: "cog"
 ---
 
-# Burn and boot Rasperry Pi Os
+## Burn and boot Rasperry Pi Os
 
 On a Windows 10 PC:
-1. Using Raspberry pi imager, burn Raspberry Pi OS (32 bit) on the target USB drive.
+1. Using Raspberry pi imager, burn Raspberry Pi OS (32 bit) on a target USB drive of 16Gb.
 2. Using "Create and format hard disk partitions" functionality of Windows 10, create an empty partition at the end of the just flashed USB drive. This can be done with right click on the unallocated space, new simple volume, next, next, yes, Do not format this volume, next, finish.
 
 In this way, when the Raspberry Pi OS will boot for the first time, it will not be able to expand the filesystem to the whole drive. Now you can boot Raspberry Pi OS from the USB. You will see an error saying "Could not expand filesystem" this is OKAY, proceed. Perform the initial configuration, setup the wifi, skip the update for now, enable SSH server. Now you will be able to connect via SSH to the Pi.
 
-# Configure new root partition
+## Configure the new root partition
 
 Open a terminal in the Pi, and install the cryptsetup utility, which we will use to encrypt the partitions.
 
@@ -37,7 +37,7 @@ root@hostname:/home/pi# fdisk -l
 
 Encrypt and format sda3.
 
-```
+```bash
 root@hostname:/home/pi# cryptsetup -v luksFormat -c xchacha20,aes-adiantum-plain64 /dev/sda3
 root@hostname:/home/pi# cryptsetup -v luksOpen /dev/sda3 sda3_crypt
 root@hostname:/home/pi# mkfs -t ext4 /dev/mapper/sda3_crypt 
@@ -45,7 +45,7 @@ root@hostname:/home/pi# mkfs -t ext4 /dev/mapper/sda3_crypt
 
 Copy files from the original root (sda2) to the new encrypted root partition (sda3).
 
-```
+```bash
 root@hostname:/home/pi# mkdir -p /mnt/newroot
 root@hostname:/home/pi# mount /dev/mapper/sda3_crypt /mnt/newroot
 root@hostname:/home/pi# sudo mkdir -p /mnt/oldroot
@@ -54,11 +54,11 @@ root@hostname:/home/pi# rsync -avhP /mnt/oldroot/ /mnt/newroot/
 root@hostname:/home/pi# sync && sync
 ```
 
-# Ensure new root partition is decrypted and mounted during boot
+## Ensure the new root partition is used on boot
 
 Using blkid, keep note of the luks and ext4 partition UUID
 
-```
+```bash
 root@hostname:/home/pi# blkid
 /dev/sda1: LABEL_FATBOOT="boot" LABEL="boot" UUID="7616-4FD8" TYPE="vfat" PARTUUID="f4481065-01"
 /dev/sda2: LABEL="rootfs" UUID="87b585d1-84c3-486a-8f3d-77cf16f84f30" TYPE="ext4" PARTUUID="f4481065-02"
@@ -68,37 +68,50 @@ root@hostname:/home/pi# blkid
 
 Edit crypttab file to decrypt sda3 using user provided password. Be careful in using the UUID of /dev/sda3.
 
-```
+```bash
 root@hostname:/home/pi# nano /mnt/newroot/etc/crypttab
+
+# new line:
 sda3_crypt UUID=2a78c011-94b0-4127-8c4d-927bf39ca018 none luks
 ```
 
 Edit the fstab file, to mount the partition on boot. Replace the line with / with the new line using sda3_crypt.
 
-```
+```bash
 root@hostname:/home/pi# nano /mnt/newroot/etc/fstab
+
+# new line to replace:
 /dev/mapper/sda3_crypt   /            ext4    defaults,noatime  0       1
 ```
 
-Change /boot/cmdline.txt, check the PARTUUID value
+Change /boot/cmdline.txt, check the PARTUUID value.
 
-```
-cp /boot/cmdline.txt /boot/cmdline.txt.normal
+```bash
+root@hostname:/home/pi# cp /boot/cmdline.txt /boot/cmdline.txt.normal
+root@hostname:/home/pi# nano /boot/cmdline.txt
 
-nano /boot/cmdline.txt
+# new line to replace:
 console=serial0,115200 console=tty1 root=/dev/mapper/sda3_crypt rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait quiet plymouth.ignore-serial-consoles cryptdevice=PARTUUID="f4481065-03":sda3_crypt
 ```
 
-and /boot/config.txt, by appending the new line at the end of the file
+Change /boot/config.txt, by appending the new line at the end of the file
 
-```
+```bash
 nano /boot/config.txt
+
+# new line to insert at the end:
 initramfs initramfs.gz followkernel
 ``` 
 
-# Add kernel postinst script
+## Configure a kernel postinst script
 
-nano /etc/kernel/postinst.d/initramfs-rebuild
+Create a new kernel post install script, so that the initiramfs is updated upon kernel update.
+
+```bash
+root@hostname:/home/pi# nano /etc/kernel/postinst.d/initramfs-rebuild
+```
+
+The content being the following script.
 
 ```bash
 #!/bin/sh -e
@@ -146,18 +159,26 @@ esac
 # Exit if rebuild cannot be performed or not needed.
 [ -x /usr/sbin/mkinitramfs ] || exit 0
 [ -f /boot/initramfs.gz ] || exit 0
-lsinitramfs /boot/initramfs.gz |grep -q "/$version$" && exit 0  # Already in initramfs.
+lsinitramfs /boot/initramfs.gz | grep -q "/$version$" && exit 0  # Already in initramfs.
 
 # Rebuild.
 mkinitramfs -o /boot/initramfs.gz "$version"
 ```
 
-chmod +x /etc/kernel/postinst.d/initramfs-rebuild
-cp /etc/kernel/postinst.d/initramfs-rebuild /mnt/newroot/etc/kernel/postinst.d/initramfs-rebuild
+Update the permissions to make the file executable and copy to new partition.
 
-# Add initramfs hook for cryptsetup
+```bash
+root@hostname:/home/pi# chmod +x /etc/kernel/postinst.d/initramfs-rebuild
+root@hostname:/home/pi# cp /etc/kernel/postinst.d/initramfs-rebuild /mnt/newroot/etc/kernel/postinst.d/initramfs-rebuild
+```
 
-nano /etc/initramfs-tools/hooks/luks_hooks
+## Configure an initramfs hook for cryptsetup
+
+```bash
+root@hostname:/home/pi# nano /etc/initramfs-tools/hooks/luks_hooks
+```
+
+The content being the following.
 
 ```bash
 #!/bin/sh -e
@@ -173,12 +194,20 @@ copy_exec /sbin/fdisk /sbin
 copy_exec /sbin/cryptsetup /sbin
 ```
 
-chmod +x /etc/initramfs-tools/hooks/luks_hooks
-cp /etc/initramfs-tools/hooks/luks_hooks /mnt/newroot/etc/initramfs-tools/hooks/luks_hooks
+Update the permissions to make the file executable and copy to new partition.
 
-# Add initramfs kernel modules
+```
+root@hostname:/home/pi# chmod +x /etc/initramfs-tools/hooks/luks_hooks
+root@hostname:/home/pi# cp /etc/initramfs-tools/hooks/luks_hooks /mnt/newroot/etc/initramfs-tools/hooks/luks_hooks
+```
 
-nano /etc/initramfs-tools/modules
+## Configure an initramfs kernel modules
+
+```bash
+root@hostname:/home/pi# nano /etc/initramfs-tools/modules
+```
+
+Ensure the following modules are present.
 
 ```
 algif_skcipher
@@ -190,116 +219,55 @@ nhpoly1305
 dm-crypt
 ```
 
-cp /etc/initramfs-tools/modules /mnt/newroot/etc/initramfs-tools/modules
+Copy file to new partition.
 
-# Finally build the initramfs
+```
+root@hostname:/home/pi# cp /etc/initramfs-tools/modules /mnt/newroot/etc/initramfs-tools/modules
+```
 
+## Build the initramfs
+
+Do not care about warnings generated after the first instruction, because we have CRYPTSETUP=y...
+
+``` bash
 CRYPTSETUP=y mkinitramfs -o /boot/initramfs.gz
-
-Do not care about warnings, because we have CRYPTSETUP=y...
-
 reboot
+```
 
-# It will drop into initramfs ...
+After reboot, it will drop into initramfs, and it's necessary to unlock the disk by hand.
 
 ```
 cryptsetup -v luksOpen /dev/sda3 sda3_crypt
 exit
 ```
-And it will start ...
 
-# SSH back into the pi
+Now the OS will boot, so it's possible to SSH again into the Pi. We can build again the initramfs and now there should be no warnings
 
+```
 sudo su -
-
 mkinitramfs -o /boot/initramfs.gz
+```
 
-Now there should be no warnings
+## Cleanup and reboot
 
+```
 sudo rmdir /mnt/oldroot
 sudo rmdir /mnt/newroot
-
 reboot
-
-# End of procedure! Now some useful notes and commands:
-
-Performed on kernel 5.10.17-v7l+ on a usb drive
-* initramfs before kernel update: 464 -rwxr-xr-x  1 root root  15M Jun 30 19:08  initramfs-5.10.17-v7l+.gz
-* initramfs after kernel update: 
-
-Performed on 4.19.118-v7l+ on a microsd, with a different cypher (aes-xts-plain)
-* initramfs original: 400 -rwxr-xr-x  1 root root 14944793 Jun 30 12:38  initramfs.gz
-* initramfs after kernel update: 400 -rwxr-xr-x  1 root root 15483048 Jun 30 13:01  initramfs.gz
-
-update-initramfs -v -c -k `uname -r`
-
-update-initramfs -v -c -k all
-
-lsinitramfs /boot/initramfs.gz | grep crypt
-
-# Now let's create a disk image for the third partition
-
-```
-dd if=/dev/sdc3 conv=sync,noerror bs=4M | pv -s 16G | pigz > /media/ubuntu/RaspiImages/2020.07.02-sandisk-16-raspios-crypted-v01-sdc3.gz
 ```
 
-# Recreate partitions and restore sdc3 upon sdc2
-
-Then on the 16GB drive Delete partitions 2,3 and recreate partition 2 as partition 2+3
-
-Restore partion 3 upon new partition 2
-
-pigz -dc /media/ubuntu/RaspiImages/2020.07.02-sandisk-16-raspios-crypted-v01-sdc3.gz | pv -s 12G | dd of=/dev/sdd2
-
-Change in /boot/cmdline.txt the partition that mounts into sda3_crypt, PARTUUID same with 02 at the end
-
-Boot from raspi, it should work... On the raspi:
-
-nano /etc/fstab
-nano /etc/crypttab
-nano /boot/cmdline.txt
-
-CRYPTSETUP=y mkinitramfs -o /boot/initramfs.gz
-There are warnings but we do not care...
-
-reboot
-
-# It will drop (again) into initramfs ...
-
-```
-cryptsetup -v luksOpen /dev/sda2 sda2_crypt
-exit
-```
-
-sudo su -
-
-mkinitramfs -o /boot/initramfs.gz
-
-Now there should be no warnings
-
-reboot
-
-# Finally we need to resize
-
-shutdown 
-
-Here we may need resize...
-
-sudo su -
-
-cryptsetup -v luksOpen /dev/sdb2 sdb2_crypt
-
-cryptsetup resize /dev/mapper/sdb2_crypt
-fsck -f /dev/mapper/sda1_crypt
-resize2fs /dev/mapper/sdb2_crypt
-
-# Configuration
+## Configure the operating system
 
 Then sudo raspi-config
 - install ssh server: raspi-config -> interfaces -> ssh
 - enable desktop boot without autologin: raspi-config -> boot options -> desktop/cli -> Desktop
 - change the hostname: raspi-config -> Network options -> hostname -> btcpay
 
+Do not ask executable files: File manager, Edit, Preferences, General, Check "Do not ask option on executable launch"
+
+Clone the btcpayserver repository.
+
+```
 ssh pi@...
 
 apt-get purge realvnc-vnc-server
@@ -309,8 +277,10 @@ mkdir -p /root/BTCPayNode
 cd /root/BTCPayNode
 git clone https://github.com/gradientskier/btcpayserver-docker.git
 
-touch /home/pi/Desktop/setup.desktop
 nano /home/pi/Desktop/setup.desktop
+```
+
+Insert the following content in the setup icon.
 
 ```
 [Desktop Entry]
@@ -325,46 +295,115 @@ Icon=/usr/share/icons/gnome/256x256/apps/terminal.png
 Name=Setup Node
 
 Exec=bash -c 'sudo /root/BTCPayNode/btcpayserver-docker/Tools/rpi-setup-node.sh'
-
 ```
 
+Change permissions for the setup icon.
+
+```
 chown pi:pi /home/pi/Desktop/setup.desktop
 chmod 700 /home/pi/Desktop/setup.desktop
-
-Do not ask executable files: File manager, Edit, Preferences, General, Check "Do not ask option on executable launch"
+```
 
 Remove the wifi password
+
+```
 nano /etc/wpa_supplicant/wpa_supplicant.conf
-Delete the relevant wifi network block (including the ‘network=’ and opening/closing braces.
+# Delete the relevant wifi network block, including the ‘network=’ and opening/closing braces.
+```
 
-# Create the final image
 
-Always check the name of the drive
-fdisk -l
+## Create the operating system image
 
-dd if=/dev/sdd conv=sync,noerror bs=4M | pv -s 16G | pigz > /media/ubuntu/RaspiImages/2020.07.15-sandisk-16-raspios-crypted-v03.gz
+Now you have a USB drive that boots from the third partition, and there is a second partition in between that can be removed. It's possible to create an image
+that does not have the second partition in between. We take the USB drive into another linux machine and we create a disk image for the third partition.
+In the example, the USB drive has been mounted as /dev/sdc and the resulting image is saved into another drive at /media/ubuntu/RaspiImages.
 
+```bash
+apt install pv pigz
+dd if=/dev/sdc3 conv=sync,noerror bs=4M | pv -s 16G | pigz > /media/ubuntu/RaspiImages/2020.07.02-sandisk-16-raspios-crypted-v01-sdc3.gz
+```
+
+After saving an image for sdc3, you can recreate partitions and restore sdc3 upon sdc2. On the 16GB drive, using fdisk, delete partitions 2,3 and recreate partition 2 as partition 2+3. Finally restore partion 3 upon new partition 2
+
+```bash
+pigz -dc /media/ubuntu/RaspiImages/2020.07.02-sandisk-16-raspios-crypted-v01-sdc3.gz | pv -s 12G | dd of=/dev/sdd2
+```
+
+Using a text editor for /boot/cmdline.txt change the partition that decrypts into sda3_crypt, with same PARTUUID except with 02 at the end.
+Boot from the Raspberry pi and it should work. From the raspi, change accordingly:
+
+```
+nano /etc/fstab
+nano /etc/crypttab
+nano /boot/cmdline.txt
+```
+
+Rebuild initramfs and reboot
+
+```
+CRYPTSETUP=y mkinitramfs -o /boot/initramfs.gz
+reboot
+```
+
+It will drop (again) into initramfs.
+
+```
+cryptsetup -v luksOpen /dev/sda2 sda2_crypt
+exit
+```
+
+Then rebuild initramfs and reboot
+```
+sudo su -
+mkinitramfs -o /boot/initramfs.gz
+reboot
+```
+
+If desirable, we need to resize the sda2 crypt.
+
+```
+sudo su -
+cryptsetup -v luksOpen /dev/sdb2 sdb2_crypt
+cryptsetup resize /dev/mapper/sdb2_crypt
+fsck -f /dev/mapper/sda1_crypt
+resize2fs /dev/mapper/sdb2_crypt
+shutdown
+```
+
+Create the final image into another linux machine. Always check the name of the drive with `fdisk -l`, now assuming it's /dev/sdc
+
+```bash
 dd if=/dev/sdc conv=sync,noerror bs=4M | pv -s 16G | pigz > /media/ubuntu/WinMacShare/2020.07.18-sandisk-16-raspios-crypted-v04.gz
+```
 
+## Final notes
 
+Performed on kernel 5.10.17-v7l+ on a usb drive
+* initramfs before kernel update: 464 -rwxr-xr-x  1 root root  15M Jun 30 19:08  initramfs-5.10.17-v7l+.gz
+* initramfs after kernel update: 
+
+Performed on 4.19.118-v7l+ on a microsd, with a different cypher (aes-xts-plain)
+* initramfs original: 400 -rwxr-xr-x  1 root root 14944793 Jun 30 12:38  initramfs.gz
+* initramfs after kernel update: 400 -rwxr-xr-x  1 root root 15483048 Jun 30 13:01  initramfs.gz
+
+Some useful commands to remember
+
+``` bash
+# To check the content of initramfs
+lsinitramfs /boot/initramfs.gz | grep crypt
+
+# To restore an image
 dd if=/dev/sdc conv=sync,noerror bs=4M | pv -s 1000G | sudo dd of=/dev/sdd bs=4M
+```
 
-# And some useful links
+Some useful links, that helped in the creation of this guide.
 
-https://mutschler.eu/linux/install-guides/raspi-btrfs/
-
-https://rr-developer.github.io/LUKS-on-Raspberry-Pi/
-
-https://raspberrypi.stackexchange.com/questions/92557/how-can-i-use-an-init-ramdisk-initramfs-on-boot-up-raspberry-pi
-
-https://robpol86.com/raspberry_pi_luks.html
-
-https://www.raspberrypi.org/documentation/configuration/config-txt/boot.md
-
-https://www.cyberciti.biz/faq/unix-linux-dd-create-make-disk-image-commands/
-
-https://unix.stackexchange.com/questions/31669/is-it-possible-to-mount-a-gzip-compressed-dd-image-on-the-fly
-
-https://www.raspberrypi.org/forums/viewtopic.php?f=91&t=248380&p=1516491
-
-https://virtual-reality-piano.medium.com/how-to-forget-a-saved-wifi-network-on-a-raspberry-pi-4cbbcf53b128
+* https://mutschler.eu/linux/install-guides/raspi-btrfs/
+* https://rr-developer.github.io/LUKS-on-Raspberry-Pi/
+* https://raspberrypi.stackexchange.com/questions/92557/how-can-i-use-an-init-ramdisk-initramfs-on-boot-up-raspberry-pi
+* https://robpol86.com/raspberry_pi_luks.html
+* https://www.raspberrypi.org/documentation/configuration/config-txt/boot.md
+* https://www.cyberciti.biz/faq/unix-linux-dd-create-make-disk-image-commands/
+* https://unix.stackexchange.com/questions/31669/is-it-possible-to-mount-a-gzip-compressed-dd-image-on-the-fly
+* https://www.raspberrypi.org/forums/viewtopic.php?f=91&t=248380&p=1516491
+* https://virtual-reality-piano.medium.com/how-to-forget-a-saved-wifi-network-on-a-raspberry-pi-4cbbcf53b128
