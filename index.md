@@ -8,8 +8,8 @@ header:
   overlay_filter: "0.5"
   overlay_image: https://via.placeholder.com/1600x586
   actions:
-    - label: "Get started"
-      url: "configure"
+    - label: "Configure now"
+      url: "configure_node"
   caption: "Photo credit: [**Unsplash**](https://unsplash.com)"
 
 # https://twitter.com/michael_saylor/status/1421806659039637508
@@ -29,14 +29,14 @@ feature_row:
     # image_caption: "Image courtesy of [Unsplash](https://unsplash.com/)"
     alt: "placeholder image 2"
     title: "Easy to setup and configure"
-    excerpt: "This is some sample content that goes here with **Markdown** formatting."
-    url: "#test-link"
+    excerpt: "in just four easy steps!"
+    url: "configure_node"
     btn_label: "Read More"
     btn_class: "btn--primary"
 
   - image_path: /assets/img_unsplash_lock_3000x2000.jpg
     title: "Secured with full disk encryption"
-    excerpt: "This is some sample content that goes here with **Markdown** formatting."
+    excerpt: "... encrypted backups, two factor authentication, onion services."
 
 feature_row2:
   - image_path: /assets/img_btcpayserver_logo_1024x512.jpeg
@@ -51,7 +51,7 @@ feature_row3:
   - image_path: /assets/img_unsplash_tools_2736x1539.jpg
     alt: "placeholder image 2"
     title: "...And extended with many other apps"
-    excerpt: 'This is some sample content that goes here with **Markdown** formatting. Right aligned with `type="right"`'
+    excerpt: 'Including electrum server (powered by electrs) and electrum wallet, pihole, remote desktop web access (powered by guacamole).'
     url: "#test-link"
     btn_label: "Read More"
     btn_class: "btn--primary"

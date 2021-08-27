@@ -3,6 +3,8 @@ main:
     url: /
   - title: "Configure"
     url: /configure_node/
+  - title: "Manual"
+    url: /user_manual/
   - title: "Blog"
     url: /blog/
   - title: "About"

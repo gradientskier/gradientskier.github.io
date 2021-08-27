@@ -4,7 +4,6 @@ classes: wide
 title: Raspberry Pi OS full disk encryption from scratch
 permalink: /configure_fde/
 toc: true
-toc_label: "Table of content"
 toc_icon: "cog"
 ---
 
