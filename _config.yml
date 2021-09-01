@@ -75,7 +75,7 @@ exclude:
 
 author:
   name: "Your Name"
-  avatar: "http://placehold.it/350x350"
+  avatar: "https://via.placeholder.com/350x350"
   bio: "I am an **amazing** person." # Note: Markdown is allowed
   location: "Somewhere"
   links:
