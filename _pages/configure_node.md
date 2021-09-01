@@ -25,7 +25,7 @@ toc_icon: "cog"
 
 {% include video id="ypBuUG3xqCg" provider="youtube" %}
 
-If you want to read the (heavy) technical procedure which was used to create the image, you can read how to configure [Raspberry Pi OS full disk encryption from scratch](configure_fde).
+If you want to read the (heavy) technical procedure which was used to create the image, you can read how to configure [Raspberry Pi OS full disk encryption from scratch](/configure_fde).
 
 # 4. Run the setup
 
