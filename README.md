@@ -1,7 +1,4 @@
-# Github pages documentation powered by jekyll
+# Gradientskier.github.io
 
-Test with 
+Website at [https://gradientskier.github.io](https://gradientskier.github.io).
 
-```
-bundle exec jekyll serve --host=0.0.0.0
-```
