@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>https://gradientskier.github.io/btcpayserver-docker/jekyll/update/2021/04/11/welcome-to-jekyll.html</loc>
+<loc>https://gradientskier.github.io/jekyll/update/2021/04/11/welcome-to-jekyll.html</loc>
 <lastmod>2021-04-11T23:04:51+02:00</lastmod>
 </url>
 <url>
-<loc>https://gradientskier.github.io/btcpayserver-docker/about/</loc>
+<loc>https://gradientskier.github.io/about/</loc>
 </url>
 <url>
-<loc>https://gradientskier.github.io/btcpayserver-docker/blog/</loc>
+<loc>https://gradientskier.github.io/blog/</loc>
 </url>
 <url>
-<loc>https://gradientskier.github.io/btcpayserver-docker/configure_fde/</loc>
+<loc>https://gradientskier.github.io/configure_fde/</loc>
 </url>
 <url>
-<loc>https://gradientskier.github.io/btcpayserver-docker/configure_node/</loc>
+<loc>https://gradientskier.github.io/configure_node/</loc>
 </url>
 <url>
-<loc>https://gradientskier.github.io/btcpayserver-docker/</loc>
+<loc>https://gradientskier.github.io/</loc>
 </url>
 <url>
-<loc>https://gradientskier.github.io/btcpayserver-docker/user_manual/</loc>
+<loc>https://gradientskier.github.io/user_manual/</loc>
 </url>
 <url>
-<loc>https://gradientskier.github.io/btcpayserver-docker/_pages/buy.html</loc>
+<loc>https://gradientskier.github.io/_pages/buy.html</loc>
 </url>
 </urlset>

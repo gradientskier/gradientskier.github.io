@@ -21,7 +21,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="YAB Node">
 <meta property="og:title" content="User manual">
-<meta property="og:url" content="https://gradientskier.github.io/btcpayserver-docker/user_manual/">
+<meta property="og:url" content="https://gradientskier.github.io/user_manual/">
 
 
   <meta property="og:description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
@@ -37,7 +37,7 @@
 
 
 
-<link rel="canonical" href="https://gradientskier.github.io/btcpayserver-docker/user_manual/">
+<link rel="canonical" href="https://gradientskier.github.io/user_manual/">
 
 
 
@@ -48,7 +48,7 @@
     
       "@type": "Person",
       "name": null,
-      "url": "https://gradientskier.github.io/btcpayserver-docker/"
+      "url": "https://gradientskier.github.io/"
     
   }
 </script>
@@ -72,7 +72,7 @@
 </script>
 
 <!-- For all browsers -->
-<link rel="stylesheet" href="/btcpayserver-docker/assets/css/main.css">
+<link rel="stylesheet" href="/assets/css/main.css">
 <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
 
@@ -106,20 +106,20 @@
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
         
-        <a class="site-title" href="/btcpayserver-docker/">
+        <a class="site-title" href="/">
           YAB Node
           
         </a>
         <ul class="visible-links"><li class="masthead__menu-item">
-              <a href="/btcpayserver-docker/">Home</a>
+              <a href="/">Home</a>
             </li><li class="masthead__menu-item">
-              <a href="/btcpayserver-docker/configure_node/">Configure</a>
+              <a href="/configure_node/">Configure</a>
             </li><li class="masthead__menu-item">
-              <a href="/btcpayserver-docker/user_manual/">Manual</a>
+              <a href="/user_manual/">Manual</a>
             </li><li class="masthead__menu-item">
-              <a href="/btcpayserver-docker/blog/">Blog</a>
+              <a href="/blog/">Blog</a>
             </li><li class="masthead__menu-item">
-              <a href="/btcpayserver-docker/about/">About</a>
+              <a href="/about/">About</a>
             </li></ul>
         
         <button class="greedy-nav__toggle hidden" type="button">
@@ -281,18 +281,53 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-cog"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#troubleshooting">Troubleshooting</a></li></ul>
+              <ul class="toc__menu"><li><a href="#known-issues">Known issues</a><ul><li><a href="#1gb-lnd-channeldb-on-32-bits-architectures">1GB lnd channel.db on 32 bits architectures</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a><ul><li><a href="#docker-containers-do-not-stop-correctly">Docker containers do not stop correctly</a></li><li><a href="#bitcoind-container-do-not-start-correctly">Bitcoind container do not start correctly</a></li></ul></li></ul>
 
             </nav>
           </aside>
         
-        <h2 id="troubleshooting">Troubleshooting</h2>
+        <h2 id="known-issues">Known issues</h2>
 
-<ul>
-  <li>How to stop all docker containers</li>
-</ul>
+<h3 id="1gb-lnd-channeldb-on-32-bits-architectures">1GB lnd channel.db on 32 bits architectures</h3>
+
+<p>The node is based on a 32 bits architecture; read https://twitter.com/c_otto83/status/1431589736540475395?s=20</p>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<h3 id="docker-containers-do-not-stop-correctly">Docker containers do not stop correctly</h3>
+
+<p>The following command will force a stop to all docker containers</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker stop <span class="si">$(</span>docker ps <span class="nt">-a</span> <span class="nt">-q</span><span class="si">)</span> <span class="o">&amp;&amp;</span> docker <span class="nb">rm</span> <span class="si">$(</span>docker ps <span class="nt">-a</span> <span class="nt">-q</span><span class="si">)</span>
+</code></pre></div></div>
+
+<h3 id="bitcoind-container-do-not-start-correctly">Bitcoind container do not start correctly</h3>
+
+<p>This is likely due to a chainstate corruption happened during an unsafe shutdown. 
+Make sure this is the case by reading bitcoind container logs:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker logs btcpayserver_bitcoind <span class="nt">-n</span> 20 <span class="nt">-f</span>
+</code></pre></div></div>
+
+<p>Example output in case of chainstate corruption:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2021-09-02T17:43:16Z init message: Verifying blocks...
+2021-09-02T17:43:16Z Verifying last 6 blocks at level 3
+2021-09-02T17:43:16Z [0%]...[16%]...[33%]...[50%]...[66%]...LevelDB read failure: Corruption: block checksum mismatch: /home/bitcoin/.bitcoin/chainstate/186071.ldb
+2021-09-02T17:43:27Z Fatal LevelDB error: Corruption: block checksum mismatch: /home/bitcoin/.bitcoin/chainstate/186071.ldb
+2021-09-02T17:43:27Z You can use -debug=leveldb to get more complete diagnostic messages
+2021-09-02T17:43:27Z Fatal LevelDB error: Corruption: block checksum mismatch: /home/bitcoin/.bitcoin/chainstate/186071.ldb
+2021-09-02T17:43:27Z : Error opening block database.
+Please restart with -reindex or -reindex-chainstate to recover.
+: Error opening block database.
+Please restart with -reindex or -reindex-chainstate to recover.
+2021-09-02T17:43:27Z Aborted block database rebuild. Exiting.
+2021-09-02T17:43:27Z Shutdown: In progress...
+</code></pre></div></div>
+
+<p>The issue can be solved by removing the chainstate, but requires a few days to rebuild it.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rm -rf /var/lib/docker/volumes/generated_bitcoin_datadir/_data/chainstate/
 </code></pre></div></div>
 
         
@@ -355,7 +390,7 @@
     </div>
 
     
-  <script src="/btcpayserver-docker/assets/js/main.min.js"></script>
+  <script src="/assets/js/main.min.js"></script>
 
 
 
