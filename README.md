@@ -5,7 +5,7 @@
 ```
 bundle exec jekyll build --incremental --watch
 ```
-http://127.0.0.1:5500/btcpayserver-docker
+http://127.0.0.1:5500
 
 ## Build with
 

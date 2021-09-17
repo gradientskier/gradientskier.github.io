@@ -17,15 +17,20 @@ toc_icon: "cog"
 
 {% include video id="ypBuUG3xqCg" provider="youtube" %}
 
-# 2. Configure the Raspberry Pi to boot from USB drive
+# 2. Configure the Raspberry Pi to boot from a USB drive
 
 {% include video id="ypBuUG3xqCg" provider="youtube" %}
 
-# 3. Burn the operating system to the USB drive
+# 3. Prepare the USB drive and the Microsd 
 
+## Prepare the USB drive
 {% include video id="ypBuUG3xqCg" provider="youtube" %}
 
-If you want to read the (heavy) technical procedure which was used to create the image, you can read how to configure [Raspberry Pi OS full disk encryption from scratch](/btcpayserver-docker/configure_fde).
+If you want to read the (heavy) technical procedure which was used to create the image, you can read how to configure [Raspberry Pi OS full disk encryption from scratch](/configure_fde).
+
+## Prepare the Microsd
+
+Format
 
 # 4. Run the setup
 
