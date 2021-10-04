@@ -525,18 +525,28 @@ reboot
 
 <p>Do not ask executable files: File manager, Edit, Preferences, General, Check “Do not ask option on executable launch”</p>
 
-<p>Clone the btcpayserver repository.</p>
+<p>Login as root</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh pi@...
+sudo su -
+</code></pre></div></div>
 
-apt-get purge realvnc-vnc-server
+<p>Install some utilities</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get purge realvnc-vnc-server
 apt install git xrdp htop
+</code></pre></div></div>
 
-mkdir -p /root/BTCPayNode
+<p>Clone the btcpayserver repository.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir -p /root/BTCPayNode
 cd /root/BTCPayNode
 git clone https://github.com/gradientskier/btcpayserver-docker.git
+</code></pre></div></div>
 
-nano /home/pi/Desktop/setup.desktop
+<p>Create the setup icon.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nano /home/pi/Desktop/setup.desktop
 </code></pre></div></div>
 
 <p>Insert the following content in the setup icon.</p>
@@ -563,8 +573,16 @@ chmod 700 /home/pi/Desktop/setup.desktop
 
 <p>Remove the wifi password</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nano /etc/wpa_supplicant/wpa_supplicant.conf
-# Delete the relevant wifi network block, including the ‘network=’ and opening/closing braces.
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /etc/wpa_supplicant/wpa_supplicant.conf
+# Copy all but the relevant wifi network block, including the ‘network=’ and opening/closing braces.
+
+apt install wipe
+wipe -f /etc/wpa_supplicant/wpa_supplicant.conf
+
+nano /etc/wpa_supplicant/wpa_supplicant.conf
+# Paste the previously copied section
+
+reboot
 </code></pre></div></div>
 
 <h2 id="create-the-operating-system-image">Create the operating system image</h2>
@@ -618,9 +636,9 @@ resize2fs /dev/mapper/sdb2_crypt
 shutdown
 </code></pre></div></div>
 
-<p>Create the final image into another linux machine. Always check the name of the drive with <code class="language-plaintext highlighter-rouge">fdisk -l</code>, now assuming it’s /dev/sdc</p>
+<p>Create the final image into another linux machine. Always check the name of the drive with <code class="language-plaintext highlighter-rouge">fdisk -l</code>, now assuming it’s /dev/sdb and the target image is created into an exFat file system mounted at /media/ubuntu/winmaclinux</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">dd </span><span class="k">if</span><span class="o">=</span>/dev/sdc <span class="nv">conv</span><span class="o">=</span><span class="nb">sync</span>,noerror <span class="nv">bs</span><span class="o">=</span>4M | pv <span class="nt">-s</span> 16G | pigz <span class="o">&gt;</span> /media/ubuntu/WinMacShare/2020.07.18-sandisk-16-raspios-crypted-v04.gz
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">dd </span><span class="k">if</span><span class="o">=</span>/dev/sdb <span class="nv">conv</span><span class="o">=</span><span class="nb">sync</span>,noerror <span class="nv">bs</span><span class="o">=</span>4M | pv <span class="nt">-s</span> 13G | pigz <span class="o">&gt;</span> /media/ubuntu/winmaclinux/2020.07.18-sandisk-16-raspios-crypted-v05-prod2.gz
 </code></pre></div></div>
 
 <h2 id="final-notes">Final notes</h2>
