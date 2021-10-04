@@ -264,18 +264,31 @@ Then sudo raspi-config
 
 Do not ask executable files: File manager, Edit, Preferences, General, Check "Do not ask option on executable launch"
 
-Clone the btcpayserver repository.
+Login as root
 
 ```
 ssh pi@...
+sudo su -
+```
 
+Install some utilities
+
+```
 apt-get purge realvnc-vnc-server
 apt install git xrdp htop
+```
 
+Clone the btcpayserver repository.
+
+```
 mkdir -p /root/BTCPayNode
 cd /root/BTCPayNode
 git clone https://github.com/gradientskier/btcpayserver-docker.git
+```
 
+Create the setup icon.
+
+```
 nano /home/pi/Desktop/setup.desktop
 ```
 
@@ -306,10 +319,17 @@ chmod 700 /home/pi/Desktop/setup.desktop
 Remove the wifi password
 
 ```
-nano /etc/wpa_supplicant/wpa_supplicant.conf
-# Delete the relevant wifi network block, including the ‘network=’ and opening/closing braces.
-```
+cat /etc/wpa_supplicant/wpa_supplicant.conf
+# Copy all but the relevant wifi network block, including the ‘network=’ and opening/closing braces.
 
+apt install wipe
+wipe -f /etc/wpa_supplicant/wpa_supplicant.conf
+
+nano /etc/wpa_supplicant/wpa_supplicant.conf
+# Paste the previously copied section
+
+reboot
+```
 
 ## Create the operating system image
 
@@ -369,10 +389,10 @@ resize2fs /dev/mapper/sdb2_crypt
 shutdown
 ```
 
-Create the final image into another linux machine. Always check the name of the drive with `fdisk -l`, now assuming it's /dev/sdc
+Create the final image into another linux machine. Always check the name of the drive with `fdisk -l`, now assuming it's /dev/sdb and the target image is created into an exFat file system mounted at /media/ubuntu/winmaclinux
 
 ```bash
-dd if=/dev/sdc conv=sync,noerror bs=4M | pv -s 16G | pigz > /media/ubuntu/WinMacShare/2020.07.18-sandisk-16-raspios-crypted-v04.gz
+dd if=/dev/sdb conv=sync,noerror bs=4M | pv -s 13G | pigz > /media/ubuntu/winmaclinux/2020.07.18-sandisk-16-raspios-crypted-v05-prod2.gz
 ```
 
 ## Final notes

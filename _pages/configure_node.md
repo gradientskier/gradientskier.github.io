@@ -19,6 +19,8 @@ toc_icon: "cog"
 
 # 2. Configure the Raspberry Pi to boot from a USB drive
 
+https://www.tomshardware.com/how-to/boot-raspberry-pi-4-usb
+
 {% include video id="ypBuUG3xqCg" provider="youtube" %}
 
 # 3. Prepare the USB drive and the Microsd 
@@ -27,6 +29,8 @@ toc_icon: "cog"
 {% include video id="ypBuUG3xqCg" provider="youtube" %}
 
 If you want to read the (heavy) technical procedure which was used to create the image, you can read how to configure [Raspberry Pi OS full disk encryption from scratch](/configure_fde).
+
+If you want to use an image download from [YAB node image](https://1drv.ms/)
 
 ## Prepare the Microsd
 
