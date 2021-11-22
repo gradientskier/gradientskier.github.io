@@ -10,18 +10,38 @@ toc_icon: "cog"
 ## Burn and boot Rasperry Pi Os
 
 On a Windows 10 PC:
-1. Using Raspberry pi imager, burn Raspberry Pi OS (32 bit) on a target USB drive of 16Gb.
+1. Using Raspberry pi imager, burn [Raspberry Pi OS bullseye (64 bit)](https://downloads.raspberrypi.org/raspios_arm64/images/) on a target USB drive of 16Gb.
 2. Using "Create and format hard disk partitions" functionality of Windows 10, create an empty partition at the end of the just flashed USB drive. This can be done with right click on the unallocated space, new simple volume, next, next, yes, Do not format this volume, next, finish.
 
 In this way, when the Raspberry Pi OS will boot for the first time, it will not be able to expand the filesystem to the whole drive. Now you can boot Raspberry Pi OS from the USB. You will see an error saying "Could not expand filesystem" this is OKAY, proceed. Perform the initial configuration, setup the wifi, skip the update for now, enable SSH server. Now you will be able to connect via SSH to the Pi.
 
 ## Configure the new root partition
 
-Open a terminal in the Pi, and install the cryptsetup utility, which we will use to encrypt the partitions.
+Connect to the pi via ssh
 
 ```bash
 pi@hostname:~$ ssh pi@...
 pi@hostname:~$ sudo su -
+```
+
+## Change the dtoverlay in config
+
+There are bugs in bullseye which prevents some video drivers to function. As a fix, update the /boot/config.txt
+
+``` bash
+nano /boot/config.txt
+
+# change from
+# dtoverlay=vc4-kms-v3d
+# to
+# dtoverlay=vc4-fkms-v3d
+```
+
+## Configure the new root partition
+
+Install the cryptsetup utility, which we will use to encrypt the partitions.
+
+```bash
 root@hostname:/home/pi# apt install cryptsetup
 ```
 
@@ -47,8 +67,8 @@ Copy files from the original root (sda2) to the new encrypted root partition (sd
 ```bash
 root@hostname:/home/pi# mkdir -p /mnt/newroot
 root@hostname:/home/pi# mount /dev/mapper/sda3_crypt /mnt/newroot
-root@hostname:/home/pi# sudo mkdir -p /mnt/oldroot
-root@hostname:/home/pi# sudo mount /dev/sda2 /mnt/oldroot
+root@hostname:/home/pi# mkdir -p /mnt/oldroot
+root@hostname:/home/pi# mount /dev/sda2 /mnt/oldroot
 root@hostname:/home/pi# rsync -avhP /mnt/oldroot/ /mnt/newroot/
 root@hostname:/home/pi# sync && sync
 ```
@@ -90,6 +110,7 @@ root@hostname:/home/pi# cp /boot/cmdline.txt /boot/cmdline.txt.normal
 root@hostname:/home/pi# nano /boot/cmdline.txt
 
 # new line to replace:
+# nb: change root, remove splash, add cryptdevice at the end 
 console=serial0,115200 console=tty1 root=/dev/mapper/sda3_crypt rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait quiet plymouth.ignore-serial-consoles cryptdevice=PARTUUID="f4481065-03":sda3_crypt
 ```
 
@@ -229,7 +250,7 @@ root@hostname:/home/pi# cp /etc/initramfs-tools/modules /mnt/newroot/etc/initram
 Do not care about warnings generated after the first instruction, because we have CRYPTSETUP=y...
 
 ``` bash
-CRYPTSETUP=y mkinitramfs -o /boot/initramfs.gz
+mkinitramfs -o /boot/initramfs.gz
 reboot
 ```
 
@@ -255,14 +276,7 @@ sudo rmdir /mnt/newroot
 reboot
 ```
 
-## Configure the operating system
-
-Then sudo raspi-config
-- install ssh server: raspi-config -> interfaces -> ssh
-- enable desktop boot without autologin: raspi-config -> boot options -> desktop/cli -> Desktop
-- change the hostname: raspi-config -> Network options -> hostname -> btcpay
-
-Do not ask executable files: File manager, Edit, Preferences, General, Check "Do not ask option on executable launch"
+## Install tools and upgrade
 
 Login as root
 
@@ -275,12 +289,36 @@ Install some utilities
 
 ```
 apt-get purge realvnc-vnc-server
-apt install git xrdp htop
+apt install git xrdp htop wipe
 ```
+
+Perform system update
+
+```
+apt update
+apt full-upgrade
+reboot
+```
+
+# Configure the operating system
+
+From a (likely remote) desktop:
+
+1. do a sudo raspi-config
+- enable desktop boot without autologin: raspi-config -> boot options -> desktop/cli -> Desktop
+- change the hostname: raspi-config -> Network options -> hostname -> btcpay
+
+2. Do not ask executable files: File manager, Edit, Preferences, General, Check "Do not ask option on executable launch"
+
+3. Turn off bluetooth
+
+# Install btcpayserver
 
 Clone the btcpayserver repository.
 
 ```
+ssh pi@...
+sudo su -
 mkdir -p /root/BTCPayNode
 cd /root/BTCPayNode
 git clone https://github.com/gradientskier/btcpayserver-docker.git
@@ -316,21 +354,6 @@ chown pi:pi /home/pi/Desktop/setup.desktop
 chmod 700 /home/pi/Desktop/setup.desktop
 ```
 
-Remove the wifi password
-
-```
-cat /etc/wpa_supplicant/wpa_supplicant.conf
-# Copy all but the relevant wifi network block, including the ‘network=’ and opening/closing braces.
-
-apt install wipe
-wipe -f /etc/wpa_supplicant/wpa_supplicant.conf
-
-nano /etc/wpa_supplicant/wpa_supplicant.conf
-# Paste the previously copied section
-
-reboot
-```
-
 ## Create the operating system image
 
 Now you have a USB drive that boots from the third partition, and there is a second partition in between that can be removed. It's possible to create an image
@@ -339,7 +362,7 @@ In the example, the USB drive has been mounted as /dev/sdc and the resulting ima
 
 ```bash
 apt install pv pigz
-dd if=/dev/sdc3 conv=sync,noerror bs=4M | pv -s 16G | pigz > /media/ubuntu/RaspiImages/2020.07.02-sandisk-16-raspios-crypted-v01-sdc3.gz
+dd if=/dev/sdb3 conv=sync,noerror bs=4M | pv -s 16G | pigz > /media/ubuntu/winmaclinux/2021.11.22-raspios-bullseye-arm64-part3.gz
 ```
 
 After saving an image for sdc3, you can recreate partitions and restore sdc3 upon sdc2. On the 16GB drive, using fdisk, delete partitions 2,3 and recreate partition 2 as partition 2+3. Finally restore partion 3 upon new partition 2
@@ -349,9 +372,9 @@ pigz -dc /media/ubuntu/RaspiImages/2020.07.02-sandisk-16-raspios-crypted-v01-sdc
 ```
 
 Using a text editor for /boot/cmdline.txt change the partition that decrypts into sda3_crypt, with same PARTUUID except with 02 at the end.
-Boot from the Raspberry pi and it should work. From the raspi, change accordingly:
+Boot from the Raspberry pi and it should work. From the raspi, change accordingly sda3_crypt to sda2_crypt:
 
-```
+```bash
 nano /etc/fstab
 nano /etc/crypttab
 nano /boot/cmdline.txt
@@ -360,7 +383,7 @@ nano /boot/cmdline.txt
 Rebuild initramfs and reboot
 
 ```
-CRYPTSETUP=y mkinitramfs -o /boot/initramfs.gz
+mkinitramfs -o /boot/initramfs.gz
 reboot
 ```
 
@@ -378,21 +401,35 @@ mkinitramfs -o /boot/initramfs.gz
 reboot
 ```
 
-If desirable, we need to resize the sda2 crypt.
+Now we need to resize the sda2 crypt.
 
 ```
 sudo su -
-cryptsetup -v luksOpen /dev/sdb2 sdb2_crypt
-cryptsetup resize /dev/mapper/sdb2_crypt
-fsck -f /dev/mapper/sda1_crypt
-resize2fs /dev/mapper/sdb2_crypt
+cryptsetup resize /dev/mapper/sda2_crypt
+resize2fs /dev/mapper/sda2_crypt
 shutdown
 ```
+
+## Remove the wifi password
+
+```
+cat /etc/wpa_supplicant/wpa_supplicant.conf
+# Copy all but the relevant wifi network block, including the ‘network=’ and opening/closing braces.
+
+wipe -f /etc/wpa_supplicant/wpa_supplicant.conf
+
+nano /etc/wpa_supplicant/wpa_supplicant.conf
+# Paste the previously copied section
+
+reboot
+```
+
+## Final image
 
 Create the final image into another linux machine. Always check the name of the drive with `fdisk -l`, now assuming it's /dev/sdb and the target image is created into an exFat file system mounted at /media/ubuntu/winmaclinux
 
 ```bash
-dd if=/dev/sdb conv=sync,noerror bs=4M | pv -s 13G | pigz > /media/ubuntu/winmaclinux/2020.07.18-sandisk-16-raspios-crypted-v05-prod2.gz
+dd if=/dev/sdb conv=sync,noerror bs=4M | pv -s 13G | pigz > /media/ubuntu/winmaclinux/2021.11.22-raspios-bullseye-arm64-prod2-v01.gz
 ```
 
 ## Final notes
