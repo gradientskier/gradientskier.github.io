@@ -1,42 +1,59 @@
 ---
 layout: single
 classes: wide
-title: Configure your Bitcoin node in 4 easy steps 
+title: Configure your bitcoin payment node in 5 steps 
 permalink: /configure_node/
 toc: true
 toc_icon: "cog"
 ---
 
-# 1. Buy and assemble hardware
+# 1. Get hardware and software
 
-* Raspberry Pi 
+Buy and assemble hardware:
+
+* Raspberry Pi 4 Computer, Model B 4GB RAM
 * 16 Gb microSD
 * 1 Tb SSD
-* USB to SATA/NvME adapter
-* Heat dissipation
+* USB to SATA or NvME adapter
+* Proper heat dissipation
 
-{% include video id="ypBuUG3xqCg" provider="youtube" %}
+Install [Raspberry Pi Imager](https://www.raspberrypi.com/software/), as shown in the video tutorial.
 
-# 2. Configure the Raspberry Pi to boot from a USB drive
+{% include video id="LlN1gqM70cQ" provider="youtube" %}
 
-https://www.tomshardware.com/how-to/boot-raspberry-pi-4-usb
+# 2. Flash the Raspberry Pi firmware to boot from USB
 
-{% include video id="ypBuUG3xqCg" provider="youtube" %}
+The Raspberry Pi OS will boot directly from the SSD drive. 
+It's necessary to configure the Raspberry Pi device to boot from USB instead of the MicroSD.
+This can be done by flashing the Raspberry Pi firmware with a special distribution that can be found in Raspberry Pi Imager, and must be flashed to the MicroSD. Insert the MicroSD in the Raspberry Pi and boot!
 
-# 3. Prepare the USB drive and the Microsd 
+{% include video id="LxKIxr9Vt80" provider="youtube" %}
 
-## Prepare the USB drive
-{% include video id="ypBuUG3xqCg" provider="youtube" %}
+# 3. Prepare the Microsd for backups
 
-If you want to read the (heavy) technical procedure which was used to create the image, you can read how to configure [Raspberry Pi OS full disk encryption from scratch](/configure_fde).
+The MicroSD can be used to contain backups that are very useful to restore the device in case of failures. Format the MicroSD.
 
-If you want to use an image download from [YAB node image](https://1drv.ms/)
+{% include video id="iK3RrAjYMKU" provider="youtube" %}
 
-## Prepare the Microsd
+# 4. Prepare the SSD with the operating system
 
-Format
+Now you can install the operating system to the SSD. You can use our custom operating system image, that we have prepared for you. 
 
-# 4. Run the setup
+* [Download the custom Raspberry Pi OS from here (14GB)](https://1drv.ms/).
 
-{% include video id="ypBuUG3xqCg" provider="youtube" %}
+Lean how to flash a custom image in the video tutorial.
 
+{% include video id="StpabPdHMHs" provider="youtube" %}
+
+If you prefer to not use the ready-to-go image, you can also read the (heavy) technical procedure which was used to create the image. Learn how to configure [Raspberry Pi OS full disk encryption from scratch](/configure_fde).
+
+# 5. Run the setup!!
+
+You are almost done.
+
+1. Connect your Raspberry Pi to a display and start. You will be asked to unlock the device with a password. Enter **start123** as the default password, and do not forget to change it later.
+2. Connect your Raspberry Pi to the internet, via Wi-Fi or Ethernet.
+3. Run the setup and wait for the configuration to complete. The setup can take around 30 minutes to complete, depending on your network connection.
+4. Reboot and you are ready to go.
+
+{% include video id="pHUML0avgw8" provider="youtube" %}
