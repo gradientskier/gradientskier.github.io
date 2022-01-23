@@ -71,7 +71,11 @@ plugins: []
 include: ["_pages"]
 
 exclude: 
+  - 'Gemfile'
+  - 'Gemfile.lock'
+  - 'gh-pages.code-workspace'
   - 'README.md' 
+  - 'speeches'
 
 author:
   name: "Your Name"
