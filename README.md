@@ -2,16 +2,24 @@
 
 ## Test with 
 
-```
-bundle exec jekyll build --incremental --watch
-```
-http://127.0.0.1:5500
-
-## Build with
+Compile:
 
 ```
 bundle exec jekyll build
+bundle exec jekyll build --incremental --watch
 ```
+
+Visit:
+
+http://127.0.0.1:5500
+
+## Assume docs folder unchanged during developement
+
+cd docs/
+git ls-files -z | xargs -0 git update-index --assume-unchanged
+
+cd docs/
+git ls-files -z | xargs -0 git update-index --no-assume-unchanged
 
 ## Layout documentation
 
