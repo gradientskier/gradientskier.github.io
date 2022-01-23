@@ -9,17 +9,17 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>User manual - YAB Node</title>
+<!-- begin _includes/seo.html --><title>User manual - phi payments</title>
 <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
 
 
-  <meta name="author" content="Your Name">
+  <meta name="author" content="phi solutions">
   
 
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_US">
-<meta property="og:site_name" content="YAB Node">
+<meta property="og:site_name" content="phi payments">
 <meta property="og:title" content="User manual">
 <meta property="og:url" content="https://gradientskier.github.io/user_manual/">
 
@@ -107,7 +107,7 @@
       <nav id="site-nav" class="greedy-nav">
         
         <a class="site-title" href="/">
-          YAB Node
+          phi payments
           
         </a>
         <ul class="visible-links"><li class="masthead__menu-item">
@@ -149,18 +149,18 @@
   
     <div class="author__avatar">
       
-        <img src="https://via.placeholder.com/350x350" alt="Your Name" itemprop="image">
+        <img src="https://via.placeholder.com/350x350" alt="phi solutions" itemprop="image">
       
     </div>
   
 
   <div class="author__content">
     
-      <h3 class="author__name" itemprop="name">Your Name</h3>
+      <h3 class="author__name" itemprop="name">phi solutions</h3>
     
     
       <div class="author__bio" itemprop="description">
-        <p>I am an <strong>amazing</strong> person.</p>
+        <p>Repos of self-hosting solutions for the Raspberry Pi</p>
 
       </div>
     
@@ -171,14 +171,14 @@
     <ul class="author__urls social-icons">
       
         <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
-          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Somewhere</span>
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">We ♥ Italy</span>
         </li>
       
 
       
         
           
-            <li><a href="https://mademistakes.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Made Mistakes</span></a></li>
+            <li><a href="https://mademistakes.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
           
         
           
@@ -281,16 +281,57 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-cog"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#known-issues">Known issues</a><ul><li><a href="#1gb-lnd-channeldb-on-32-bits-architectures">1GB lnd channel.db on 32 bits architectures</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a><ul><li><a href="#docker-containers-do-not-stop-correctly">Docker containers do not stop correctly</a></li><li><a href="#bitcoind-container-do-not-start-correctly">Bitcoind container do not start correctly</a></li></ul></li></ul>
+              <ul class="toc__menu"><li><a href="#procedures">Procedures</a><ul><li><a href="#perform-a-system-upgrade">Perform a system upgrade</a></li><li><a href="#change-the-keyboard-layout">Change the keyboard layout</a></li><li><a href="#backuprestore-migrate-blocks-chainstate-and-electrs-db-from-another-drive">Backup/restore: migrate blocks, chainstate and electrs db from another drive</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a><ul><li><a href="#docker-containers-do-not-stop-correctly">Docker containers do not stop correctly</a></li><li><a href="#bitcoind-container-do-not-start-correctly">Bitcoind container do not start correctly</a></li><li><a href="#postgres-container-does-not-start-after-restoring-an-arm32-backup-onto-a-arm64-image">Postgres container does not start after restoring an arm32 backup onto a arm64 image</a></li></ul></li></ul>
 
             </nav>
           </aside>
         
-        <h2 id="known-issues">Known issues</h2>
+        <h2 id="procedures">Procedures</h2>
 
-<h3 id="1gb-lnd-channeldb-on-32-bits-architectures">1GB lnd channel.db on 32 bits architectures</h3>
+<h3 id="perform-a-system-upgrade">Perform a system upgrade</h3>
 
-<p>The node is based on a 32 bits architecture; read https://twitter.com/c_otto83/status/1431589736540475395?s=20</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt update
+apt full-upgrade
+reboot
+</code></pre></div></div>
+
+<h3 id="change-the-keyboard-layout">Change the keyboard layout</h3>
+
+<p>After changing the keyboard layout, it’s important to regenerate the initramfs, otherwise the new keyboard layout won’t work for the drive encryption password.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>mkinitramfs <span class="nt">-o</span> /boot/initramfs.gz
+</code></pre></div></div>
+
+<h3 id="backuprestore-migrate-blocks-chainstate-and-electrs-db-from-another-drive">Backup/restore: migrate blocks, chainstate and electrs db from another drive</h3>
+
+<p>Gather info:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fdisk <span class="nt">-l</span>
+<span class="nb">df</span> <span class="nt">-h</span>
+ll /mnt/sdb3/volumes/generated_bitcoin_datadir/_data/chainstate
+ll /mnt/sdb3/volumes/generated_bitcoin_datadir/_data/blocks
+</code></pre></div></div>
+
+<p>Open and mount target device:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cryptsetup <span class="nt">-v</span> luksOpen /dev/sdc2 sdc2_crypt
+<span class="nb">mkdir</span> <span class="nt">-p</span> /mnt/sdc2
+mount /dev/mapper/sdc2_crypt /mnt/sdc2
+cryptsetup <span class="nt">-v</span> luksOpen <span class="nt">--key-file</span> /mnt/sdc2/opt/rpi_vault/sda3_luks_keyfile /dev/sdc3 sdc3_crypt
+<span class="nb">mkdir</span> <span class="nt">-p</span> /mnt/sdc3
+mount /dev/mapper/sdc3_crypt /mnt/sdc3
+</code></pre></div></div>
+
+<p>Then perform block migration:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ll /mnt/sdc3/volumes/generated_bitcoin_datadir/_data/
+<span class="nb">rm</span> <span class="nt">-rf</span> /mnt/sdc3/volumes/generated_bitcoin_datadir/_data/blocks
+<span class="nb">rm</span> <span class="nt">-rf</span> /mnt/sdc3/volumes/generated_bitcoin_datadir/_data/chainstate
+<span class="nb">rm</span> <span class="nt">-rf</span> /mnt/sdc3/volumes/generated_electrs_datadir/_data/db
+rsync <span class="nt">-av</span> <span class="nt">--progress</span> /mnt/sdb3/volumes/generated_bitcoin_datadir/_data/blocks /mnt/sdc3/volumes/generated_bitcoin_datadir/_data/
+rsync <span class="nt">-av</span> <span class="nt">--progress</span> /mnt/sdb3/volumes/generated_bitcoin_datadir/_data/chainstate /mnt/sdc3/volumes/generated_bitcoin_datadir/_data/
+rsync <span class="nt">-av</span> <span class="nt">--progress</span> /mnt/sdb3/volumes/generated_electrs_datadir/_data/db /mnt/sdc3/volumes/generated_electrs_datadir/_data/
+</code></pre></div></div>
 
 <h2 id="troubleshooting">Troubleshooting</h2>
 
@@ -328,6 +369,35 @@ Please restart with -reindex or -reindex-chainstate to recover.
 <p>The issue can be solved by removing the chainstate, but requires a few days to rebuild it.</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rm -rf /var/lib/docker/volumes/generated_bitcoin_datadir/_data/chainstate/
+</code></pre></div></div>
+
+<h3 id="postgres-container-does-not-start-after-restoring-an-arm32-backup-onto-a-arm64-image">Postgres container does not start after restoring an arm32 backup onto a arm64 image</h3>
+
+<p>Postgres docker container will fail with</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2022-01-12 17:23:21.610 UTC [1] FATAL:  database files are incompatible with server
+2022-01-12 17:23:21.610 UTC [1] DETAIL:  The database cluster was initialized without USE_FLOAT8_BYVAL but the server was compiled with USE_FLOAT8_BYVAL.
+2022-01-12 17:23:21.610 UTC [1] HINT:  It looks like you need to recompile or initdb.
+2022-01-12 17:23:21.611 UTC [1] LOG:  database system is shut down
+</code></pre></div></div>
+
+<p>You can restore the postgres database using the backup</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Stop all containers</span>
+docker stop <span class="si">$(</span>docker ps <span class="nt">-a</span> <span class="nt">-q</span><span class="si">)</span>
+<span class="c"># Remove the postgres datadir</span>
+<span class="nb">rm</span> <span class="nt">-rf</span> /var/lib/docker/volumes/generated_postgres_datadir/_data/<span class="k">*</span>
+<span class="c"># Start docker container</span>
+docker start generated_postgres_1
+<span class="c"># Restore database using the dump</span>
+<span class="nb">cat</span> /var/lib/docker/opt/backups/&lt;your_backup_name&gt;.sql | docker <span class="nb">exec</span> <span class="nt">-i</span> generated_postgres_1 psql <span class="nt">-U</span> postgres
+<span class="c"># Ensure databases have been created</span>
+docker <span class="nb">exec</span> <span class="nt">-it</span> generated_postgres_1 psql <span class="nt">-U</span> postgres
+<span class="c"># In the postgres prompt</span>
+<span class="se">\l</span>
+<span class="nb">exit</span>
+<span class="c"># Restart btcpayserver</span>
+service btcpayserver restart
 </code></pre></div></div>
 
         
@@ -384,7 +454,7 @@ Please restart with -reindex or -reindex-chainstate to recover.
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2021 YAB Node. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2022 phi payments. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>

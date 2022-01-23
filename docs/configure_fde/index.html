@@ -9,17 +9,17 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Raspberry Pi OS full disk encryption from scratch - YAB Node</title>
+<!-- begin _includes/seo.html --><title>Raspberry Pi OS full disk encryption from scratch - phi payments</title>
 <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
 
 
-  <meta name="author" content="Your Name">
+  <meta name="author" content="phi solutions">
   
 
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_US">
-<meta property="og:site_name" content="YAB Node">
+<meta property="og:site_name" content="phi payments">
 <meta property="og:title" content="Raspberry Pi OS full disk encryption from scratch">
 <meta property="og:url" content="https://gradientskier.github.io/configure_fde/">
 
@@ -107,7 +107,7 @@
       <nav id="site-nav" class="greedy-nav">
         
         <a class="site-title" href="/">
-          YAB Node
+          phi payments
           
         </a>
         <ul class="visible-links"><li class="masthead__menu-item">
@@ -149,18 +149,18 @@
   
     <div class="author__avatar">
       
-        <img src="https://via.placeholder.com/350x350" alt="Your Name" itemprop="image">
+        <img src="https://via.placeholder.com/350x350" alt="phi solutions" itemprop="image">
       
     </div>
   
 
   <div class="author__content">
     
-      <h3 class="author__name" itemprop="name">Your Name</h3>
+      <h3 class="author__name" itemprop="name">phi solutions</h3>
     
     
       <div class="author__bio" itemprop="description">
-        <p>I am an <strong>amazing</strong> person.</p>
+        <p>Repos of self-hosting solutions for the Raspberry Pi</p>
 
       </div>
     
@@ -171,14 +171,14 @@
     <ul class="author__urls social-icons">
       
         <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
-          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Somewhere</span>
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">We ♥ Italy</span>
         </li>
       
 
       
         
           
-            <li><a href="https://mademistakes.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Made Mistakes</span></a></li>
+            <li><a href="https://mademistakes.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
           
         
           
@@ -281,7 +281,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-cog"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#burn-and-boot-rasperry-pi-os">Burn and boot Rasperry Pi Os</a></li><li><a href="#configure-the-new-root-partition">Configure the new root partition</a></li><li><a href="#ensure-the-new-root-partition-is-used-on-boot">Ensure the new root partition is used on boot</a></li><li><a href="#configure-a-kernel-postinst-script">Configure a kernel postinst script</a></li><li><a href="#configure-an-initramfs-hook-for-cryptsetup">Configure an initramfs hook for cryptsetup</a></li><li><a href="#configure-an-initramfs-kernel-modules">Configure an initramfs kernel modules</a></li><li><a href="#build-the-initramfs">Build the initramfs</a></li><li><a href="#cleanup-and-reboot">Cleanup and reboot</a></li><li><a href="#configure-the-operating-system">Configure the operating system</a></li><li><a href="#create-the-operating-system-image">Create the operating system image</a></li><li><a href="#final-notes">Final notes</a></li></ul>
+              <ul class="toc__menu"><li><a href="#burn-and-boot-rasperry-pi-os">Burn and boot Rasperry Pi Os</a></li><li><a href="#configure-the-new-root-partition">Configure the new root partition</a></li><li><a href="#change-the-dtoverlay-in-config">Change the dtoverlay in config</a></li><li><a href="#configure-the-new-root-partition-1">Configure the new root partition</a></li><li><a href="#ensure-the-new-root-partition-is-used-on-boot">Ensure the new root partition is used on boot</a></li><li><a href="#configure-a-kernel-postinst-script">Configure a kernel postinst script</a></li><li><a href="#configure-an-initramfs-hook-for-cryptsetup">Configure an initramfs hook for cryptsetup</a></li><li><a href="#configure-an-initramfs-kernel-modules">Configure an initramfs kernel modules</a></li><li><a href="#build-the-initramfs">Build the initramfs</a></li><li><a href="#cleanup-and-reboot">Cleanup and reboot</a></li><li><a href="#install-tools-and-upgrade">Install tools and upgrade</a></li><li><a href="#create-the-operating-system-image">Create the operating system image</a></li><li><a href="#remove-the-wifi-password">Remove the wifi password</a></li><li><a href="#final-image">Final image</a></li><li><a href="#final-notes">Final notes</a></li></ul>
 
             </nav>
           </aside>
@@ -290,7 +290,7 @@
 
 <p>On a Windows 10 PC:</p>
 <ol>
-  <li>Using Raspberry pi imager, burn Raspberry Pi OS (32 bit) on a target USB drive of 16Gb.</li>
+  <li>Using Raspberry pi imager, burn <a href="https://downloads.raspberrypi.org/raspios_arm64/images/">Raspberry Pi OS bullseye (64 bit)</a> on a target USB drive of 16Gb.</li>
   <li>Using “Create and format hard disk partitions” functionality of Windows 10, create an empty partition at the end of the just flashed USB drive. This can be done with right click on the unallocated space, new simple volume, next, next, yes, Do not format this volume, next, finish.</li>
 </ol>
 
@@ -298,11 +298,29 @@
 
 <h2 id="configure-the-new-root-partition">Configure the new root partition</h2>
 
-<p>Open a terminal in the Pi, and install the cryptsetup utility, which we will use to encrypt the partitions.</p>
+<p>Connect to the pi via ssh</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pi@hostname:~<span class="nv">$ </span>ssh pi@...
 pi@hostname:~<span class="nv">$ </span><span class="nb">sudo </span>su -
-root@hostname:/home/pi# apt <span class="nb">install </span>cryptsetup
+</code></pre></div></div>
+
+<h2 id="change-the-dtoverlay-in-config">Change the dtoverlay in config</h2>
+
+<p>There are bugs in bullseye which prevents some video drivers to function. As a fix, update the /boot/config.txt</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nano /boot/config.txt
+
+<span class="c"># change from</span>
+<span class="c"># dtoverlay=vc4-kms-v3d</span>
+<span class="c"># to</span>
+<span class="c"># dtoverlay=vc4-fkms-v3d</span>
+</code></pre></div></div>
+
+<h2 id="configure-the-new-root-partition-1">Configure the new root partition</h2>
+
+<p>Install the cryptsetup utility, which we will use to encrypt the partitions.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@hostname:/home/pi# apt <span class="nb">install </span>cryptsetup
 </code></pre></div></div>
 
 <p>If you list the partitions of the USB drive (sda) you should see three partitions, the first one (sda1) is used for boot, the second one (sda2) contains the operating system, and the third one (sda3) is an empty partition.</p>
@@ -324,8 +342,8 @@ root@hostname:/home/pi# mkfs <span class="nt">-t</span> ext4 /dev/mapper/sda3_cr
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@hostname:/home/pi# <span class="nb">mkdir</span> <span class="nt">-p</span> /mnt/newroot
 root@hostname:/home/pi# mount /dev/mapper/sda3_crypt /mnt/newroot
-root@hostname:/home/pi# <span class="nb">sudo mkdir</span> <span class="nt">-p</span> /mnt/oldroot
-root@hostname:/home/pi# <span class="nb">sudo </span>mount /dev/sda2 /mnt/oldroot
+root@hostname:/home/pi# <span class="nb">mkdir</span> <span class="nt">-p</span> /mnt/oldroot
+root@hostname:/home/pi# mount /dev/sda2 /mnt/oldroot
 root@hostname:/home/pi# rsync <span class="nt">-avhP</span> /mnt/oldroot/ /mnt/newroot/
 root@hostname:/home/pi# <span class="nb">sync</span> <span class="o">&amp;&amp;</span> <span class="nb">sync</span>
 </code></pre></div></div>
@@ -363,6 +381,7 @@ sda3_crypt <span class="nv">UUID</span><span class="o">=</span>2a78c011-94b0-412
 root@hostname:/home/pi# nano /boot/cmdline.txt
 
 <span class="c"># new line to replace:</span>
+<span class="c"># nb: change root, remove splash, add cryptdevice at the end </span>
 <span class="nv">console</span><span class="o">=</span>serial0,115200 <span class="nv">console</span><span class="o">=</span>tty1 <span class="nv">root</span><span class="o">=</span>/dev/mapper/sda3_crypt <span class="nv">rootfstype</span><span class="o">=</span>ext4 <span class="nv">elevator</span><span class="o">=</span>deadline fsck.repair<span class="o">=</span><span class="nb">yes </span>rootwait quiet plymouth.ignore-serial-consoles <span class="nv">cryptdevice</span><span class="o">=</span><span class="nv">PARTUUID</span><span class="o">=</span><span class="s2">"f4481065-03"</span>:sda3_crypt
 </code></pre></div></div>
 
@@ -491,7 +510,7 @@ dm-crypt
 
 <p>Do not care about warnings generated after the first instruction, because we have CRYPTSETUP=y…</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">CRYPTSETUP</span><span class="o">=</span>y mkinitramfs <span class="nt">-o</span> /boot/initramfs.gz
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkinitramfs <span class="nt">-o</span> /boot/initramfs.gz
 reboot
 </code></pre></div></div>
 
@@ -514,16 +533,7 @@ sudo rmdir /mnt/newroot
 reboot
 </code></pre></div></div>
 
-<h2 id="configure-the-operating-system">Configure the operating system</h2>
-
-<p>Then sudo raspi-config</p>
-<ul>
-  <li>install ssh server: raspi-config -&gt; interfaces -&gt; ssh</li>
-  <li>enable desktop boot without autologin: raspi-config -&gt; boot options -&gt; desktop/cli -&gt; Desktop</li>
-  <li>change the hostname: raspi-config -&gt; Network options -&gt; hostname -&gt; btcpay</li>
-</ul>
-
-<p>Do not ask executable files: File manager, Edit, Preferences, General, Check “Do not ask option on executable launch”</p>
+<h2 id="install-tools-and-upgrade">Install tools and upgrade</h2>
 
 <p>Login as root</p>
 
@@ -534,14 +544,44 @@ sudo su -
 <p>Install some utilities</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get purge realvnc-vnc-server
-apt install git xrdp htop
+apt install git xrdp htop wipe netcat
 </code></pre></div></div>
+
+<p>Perform system update</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt update
+apt full-upgrade
+reboot
+</code></pre></div></div>
+
+<h1 id="configure-the-operating-system">Configure the operating system</h1>
+
+<p>From a (likely remote) desktop:</p>
+
+<ol>
+  <li>do a sudo raspi-config
+    <ul>
+      <li>enable desktop boot without autologin: raspi-config -&gt; boot options -&gt; desktop/cli -&gt; Desktop</li>
+      <li>change the hostname: raspi-config -&gt; Network options -&gt; hostname -&gt; btcpay</li>
+    </ul>
+  </li>
+  <li>
+    <p>Do not ask executable files: File manager, Edit, Preferences, General, Check “Do not ask option on executable launch”</p>
+  </li>
+  <li>Turn off bluetooth</li>
+</ol>
+
+<h1 id="install-btcpayserver">Install btcpayserver</h1>
 
 <p>Clone the btcpayserver repository.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir -p /root/BTCPayNode
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh pi@...
+sudo su -
+mkdir -p /root/BTCPayNode
 cd /root/BTCPayNode
 git clone https://github.com/gradientskier/btcpayserver-docker.git
+cd /root/BTCPayNode/btcpayserver-docker
+git checkout arm64-bullseye-prod
 </code></pre></div></div>
 
 <p>Create the setup icon.</p>
@@ -571,20 +611,6 @@ Exec=bash -c 'sudo /root/BTCPayNode/btcpayserver-docker/Tools/rpi-setup-node.sh'
 chmod 700 /home/pi/Desktop/setup.desktop
 </code></pre></div></div>
 
-<p>Remove the wifi password</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /etc/wpa_supplicant/wpa_supplicant.conf
-# Copy all but the relevant wifi network block, including the ‘network=’ and opening/closing braces.
-
-apt install wipe
-wipe -f /etc/wpa_supplicant/wpa_supplicant.conf
-
-nano /etc/wpa_supplicant/wpa_supplicant.conf
-# Paste the previously copied section
-
-reboot
-</code></pre></div></div>
-
 <h2 id="create-the-operating-system-image">Create the operating system image</h2>
 
 <p>Now you have a USB drive that boots from the third partition, and there is a second partition in between that can be removed. It’s possible to create an image
@@ -592,7 +618,7 @@ that does not have the second partition in between. We take the USB drive into a
 In the example, the USB drive has been mounted as /dev/sdc and the resulting image is saved into another drive at /media/ubuntu/RaspiImages.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt <span class="nb">install </span>pv pigz
-<span class="nb">dd </span><span class="k">if</span><span class="o">=</span>/dev/sdc3 <span class="nv">conv</span><span class="o">=</span><span class="nb">sync</span>,noerror <span class="nv">bs</span><span class="o">=</span>4M | pv <span class="nt">-s</span> 16G | pigz <span class="o">&gt;</span> /media/ubuntu/RaspiImages/2020.07.02-sandisk-16-raspios-crypted-v01-sdc3.gz
+<span class="nb">dd </span><span class="k">if</span><span class="o">=</span>/dev/sdb3 <span class="nv">conv</span><span class="o">=</span><span class="nb">sync</span>,noerror <span class="nv">bs</span><span class="o">=</span>4M | pv <span class="nt">-s</span> 16G | pigz <span class="o">&gt;</span> /media/ubuntu/winmaclinux/2021.11.22-raspios-bullseye-arm64-part3.gz
 </code></pre></div></div>
 
 <p>After saving an image for sdc3, you can recreate partitions and restore sdc3 upon sdc2. On the 16GB drive, using fdisk, delete partitions 2,3 and recreate partition 2 as partition 2+3. Finally restore partion 3 upon new partition 2</p>
@@ -601,16 +627,16 @@ In the example, the USB drive has been mounted as /dev/sdc and the resulting ima
 </code></pre></div></div>
 
 <p>Using a text editor for /boot/cmdline.txt change the partition that decrypts into sda3_crypt, with same PARTUUID except with 02 at the end.
-Boot from the Raspberry pi and it should work. From the raspi, change accordingly:</p>
+Boot from the Raspberry pi and it should work. From the raspi, change accordingly sda3_crypt to sda2_crypt:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nano /etc/fstab
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nano /etc/fstab
 nano /etc/crypttab
 nano /boot/cmdline.txt
 </code></pre></div></div>
 
 <p>Rebuild initramfs and reboot</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CRYPTSETUP=y mkinitramfs -o /boot/initramfs.gz
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkinitramfs -o /boot/initramfs.gz
 reboot
 </code></pre></div></div>
 
@@ -626,19 +652,32 @@ mkinitramfs -o /boot/initramfs.gz
 reboot
 </code></pre></div></div>
 
-<p>If desirable, we need to resize the sda2 crypt.</p>
+<p>Now we need to resize the sda2 crypt.</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo su -
-cryptsetup -v luksOpen /dev/sdb2 sdb2_crypt
-cryptsetup resize /dev/mapper/sdb2_crypt
-fsck -f /dev/mapper/sda1_crypt
-resize2fs /dev/mapper/sdb2_crypt
+cryptsetup resize /dev/mapper/sda2_crypt
+resize2fs /dev/mapper/sda2_crypt
 shutdown
 </code></pre></div></div>
 
+<h2 id="remove-the-wifi-password">Remove the wifi password</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /etc/wpa_supplicant/wpa_supplicant.conf
+# Copy all but the relevant wifi network block, including the ‘network=’ and opening/closing braces.
+
+wipe -f /etc/wpa_supplicant/wpa_supplicant.conf
+
+nano /etc/wpa_supplicant/wpa_supplicant.conf
+# Paste the previously copied section
+
+reboot
+</code></pre></div></div>
+
+<h2 id="final-image">Final image</h2>
+
 <p>Create the final image into another linux machine. Always check the name of the drive with <code class="language-plaintext highlighter-rouge">fdisk -l</code>, now assuming it’s /dev/sdb and the target image is created into an exFat file system mounted at /media/ubuntu/winmaclinux</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">dd </span><span class="k">if</span><span class="o">=</span>/dev/sdb <span class="nv">conv</span><span class="o">=</span><span class="nb">sync</span>,noerror <span class="nv">bs</span><span class="o">=</span>4M | pv <span class="nt">-s</span> 13G | pigz <span class="o">&gt;</span> /media/ubuntu/winmaclinux/2020.07.18-sandisk-16-raspios-crypted-v05-prod2.gz
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">dd </span><span class="k">if</span><span class="o">=</span>/dev/sdb <span class="nv">conv</span><span class="o">=</span><span class="nb">sync</span>,noerror <span class="nv">bs</span><span class="o">=</span>4M | pv <span class="nt">-s</span> 13G | pigz <span class="o">&gt;</span> /media/ubuntu/winmaclinux/2021.11.22-raspios-bullseye-arm64-prod2-v01.gz
 </code></pre></div></div>
 
 <h2 id="final-notes">Final notes</h2>
@@ -732,7 +771,7 @@ lsinitramfs /boot/initramfs.gz | <span class="nb">grep </span>crypt
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2021 YAB Node. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2022 phi payments. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>

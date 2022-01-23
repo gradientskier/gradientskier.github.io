@@ -9,18 +9,18 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Configure your Bitcoin node in 4 easy steps - YAB Node</title>
+<!-- begin _includes/seo.html --><title>Configure your bitcoin payment node in 5 steps - phi payments</title>
 <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
 
 
-  <meta name="author" content="Your Name">
+  <meta name="author" content="phi solutions">
   
 
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_US">
-<meta property="og:site_name" content="YAB Node">
-<meta property="og:title" content="Configure your Bitcoin node in 4 easy steps">
+<meta property="og:site_name" content="phi payments">
+<meta property="og:title" content="Configure your bitcoin payment node in 5 steps">
 <meta property="og:url" content="https://gradientskier.github.io/configure_node/">
 
 
@@ -107,7 +107,7 @@
       <nav id="site-nav" class="greedy-nav">
         
         <a class="site-title" href="/">
-          YAB Node
+          phi payments
           
         </a>
         <ul class="visible-links"><li class="masthead__menu-item">
@@ -149,18 +149,18 @@
   
     <div class="author__avatar">
       
-        <img src="https://via.placeholder.com/350x350" alt="Your Name" itemprop="image">
+        <img src="https://via.placeholder.com/350x350" alt="phi solutions" itemprop="image">
       
     </div>
   
 
   <div class="author__content">
     
-      <h3 class="author__name" itemprop="name">Your Name</h3>
+      <h3 class="author__name" itemprop="name">phi solutions</h3>
     
     
       <div class="author__bio" itemprop="description">
-        <p>I am an <strong>amazing</strong> person.</p>
+        <p>Repos of self-hosting solutions for the Raspberry Pi</p>
 
       </div>
     
@@ -171,14 +171,14 @@
     <ul class="author__urls social-icons">
       
         <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
-          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Somewhere</span>
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">We ♥ Italy</span>
         </li>
       
 
       
         
           
-            <li><a href="https://mademistakes.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Made Mistakes</span></a></li>
+            <li><a href="https://mademistakes.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
           
         
           
@@ -260,7 +260,7 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Configure your Bitcoin node in 4 easy steps">
+    <meta itemprop="headline" content="Configure your bitcoin payment node in 5 steps">
     
     
     
@@ -268,7 +268,7 @@
     <div class="page__inner-wrap">
       
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">Configure your Bitcoin node in 4 easy steps
+          <h1 id="page-title" class="page__title" itemprop="headline">Configure your bitcoin payment node in 5 steps
 </h1>
           
 
@@ -281,61 +281,86 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-cog"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#1-buy-and-assemble-hardware">1. Buy and assemble hardware</a></li><li><a href="#2-configure-the-raspberry-pi-to-boot-from-a-usb-drive">2. Configure the Raspberry Pi to boot from a USB drive</a></li><li><a href="#3-prepare-the-usb-drive-and-the-microsd">3. Prepare the USB drive and the Microsd</a><ul><li><a href="#prepare-the-usb-drive">Prepare the USB drive</a></li><li><a href="#prepare-the-microsd">Prepare the Microsd</a></li></ul></li><li><a href="#4-run-the-setup">4. Run the setup</a></li></ul>
+              <ul class="toc__menu"><li><a href="#1-get-hardware-and-software">1. Get hardware and software</a></li><li><a href="#2-flash-the-raspberry-pi-firmware-to-boot-from-usb">2. Flash the Raspberry Pi firmware to boot from USB</a></li><li><a href="#3-prepare-the-microsd-for-backups">3. Prepare the Microsd for backups</a></li><li><a href="#4-prepare-the-ssd-with-the-operating-system">4. Prepare the SSD with the operating system</a></li><li><a href="#5-run-the-setup">5. Run the setup!!</a></li></ul>
 
             </nav>
           </aside>
         
-        <h1 id="1-buy-and-assemble-hardware">1. Buy and assemble hardware</h1>
+        <h1 id="1-get-hardware-and-software">1. Get hardware and software</h1>
+
+<p>Buy and assemble hardware:</p>
 
 <ul>
-  <li>Raspberry Pi</li>
+  <li>Raspberry Pi 4 Computer, Model B 4GB RAM</li>
   <li>16 Gb microSD</li>
   <li>1 Tb SSD</li>
-  <li>USB to SATA/NvME adapter</li>
-  <li>Heat dissipation</li>
+  <li>USB to SATA or NvME adapter</li>
+  <li>Proper heat dissipation</li>
 </ul>
 
+<p>Install <a href="https://www.raspberrypi.com/software/">Raspberry Pi Imager</a>, as shown in the video tutorial.</p>
+
 <!-- Courtesy of embedresponsively.com //-->
 
 <div class="responsive-video-container">
-    <iframe src="https://www.youtube-nocookie.com/embed/ypBuUG3xqCg" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+    <iframe src="https://www.youtube-nocookie.com/embed/LlN1gqM70cQ" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
   </div>
 
-<h1 id="2-configure-the-raspberry-pi-to-boot-from-a-usb-drive">2. Configure the Raspberry Pi to boot from a USB drive</h1>
+<h1 id="2-flash-the-raspberry-pi-firmware-to-boot-from-usb">2. Flash the Raspberry Pi firmware to boot from USB</h1>
 
-<p>https://www.tomshardware.com/how-to/boot-raspberry-pi-4-usb</p>
+<p>The Raspberry Pi OS will boot directly from the SSD drive. 
+It’s necessary to configure the Raspberry Pi device to boot from USB instead of the MicroSD.
+This can be done by flashing the Raspberry Pi firmware with a special distribution that can be found in Raspberry Pi Imager, and must be flashed to the MicroSD. Insert the MicroSD in the Raspberry Pi and boot!</p>
 
 <!-- Courtesy of embedresponsively.com //-->
 
 <div class="responsive-video-container">
-    <iframe src="https://www.youtube-nocookie.com/embed/ypBuUG3xqCg" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+    <iframe src="https://www.youtube-nocookie.com/embed/LxKIxr9Vt80" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
   </div>
 
-<h1 id="3-prepare-the-usb-drive-and-the-microsd">3. Prepare the USB drive and the Microsd</h1>
+<h1 id="3-prepare-the-microsd-for-backups">3. Prepare the Microsd for backups</h1>
 
-<h2 id="prepare-the-usb-drive">Prepare the USB drive</h2>
+<p>The MicroSD can be used to contain backups that are very useful to restore the device in case of failures. Format the MicroSD.</p>
 
 <!-- Courtesy of embedresponsively.com //-->
 
 <div class="responsive-video-container">
-    <iframe src="https://www.youtube-nocookie.com/embed/ypBuUG3xqCg" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+    <iframe src="https://www.youtube-nocookie.com/embed/iK3RrAjYMKU" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
   </div>
 
-<p>If you want to read the (heavy) technical procedure which was used to create the image, you can read how to configure <a href="/configure_fde">Raspberry Pi OS full disk encryption from scratch</a>.</p>
+<h1 id="4-prepare-the-ssd-with-the-operating-system">4. Prepare the SSD with the operating system</h1>
 
-<p>If you want to use an image download from <a href="https://1drv.ms/">YAB node image</a></p>
+<p>Now you can install the operating system to the SSD. You can use our custom operating system image, that we have prepared for you.</p>
 
-<h2 id="prepare-the-microsd">Prepare the Microsd</h2>
+<ul>
+  <li><a href="https://1drv.ms/">Download the custom Raspberry Pi OS from here (14GB)</a>.</li>
+</ul>
 
-<p>Format</p>
-
-<h1 id="4-run-the-setup">4. Run the setup</h1>
+<p>Lean how to flash a custom image in the video tutorial.</p>
 
 <!-- Courtesy of embedresponsively.com //-->
 
 <div class="responsive-video-container">
-    <iframe src="https://www.youtube-nocookie.com/embed/ypBuUG3xqCg" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+    <iframe src="https://www.youtube-nocookie.com/embed/StpabPdHMHs" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+  </div>
+
+<p>If you prefer to not use the ready-to-go image, you can also read the (heavy) technical procedure which was used to create the image. Learn how to configure <a href="/configure_fde">Raspberry Pi OS full disk encryption from scratch</a>.</p>
+
+<h1 id="5-run-the-setup">5. Run the setup!!</h1>
+
+<p>You are almost done.</p>
+
+<ol>
+  <li>Connect your Raspberry Pi to a display and start. You will be asked to unlock the device with a password. Enter <strong>start123</strong> as the default password, and do not forget to change it later.</li>
+  <li>Connect your Raspberry Pi to the internet, via Wi-Fi or Ethernet.</li>
+  <li>Run the setup and wait for the configuration to complete. The setup can take around 30 minutes to complete, depending on your network connection.</li>
+  <li>Reboot and you are ready to go.</li>
+</ol>
+
+<!-- Courtesy of embedresponsively.com //-->
+
+<div class="responsive-video-container">
+    <iframe src="https://www.youtube-nocookie.com/embed/pHUML0avgw8" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
   </div>
 
 
@@ -393,7 +418,7 @@
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2021 YAB Node. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2022 phi payments. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>
