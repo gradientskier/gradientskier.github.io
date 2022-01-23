@@ -289,7 +289,7 @@ Install some utilities
 
 ```
 apt-get purge realvnc-vnc-server
-apt install git xrdp htop wipe
+apt install git xrdp htop wipe netcat
 ```
 
 Perform system update
@@ -322,6 +322,8 @@ sudo su -
 mkdir -p /root/BTCPayNode
 cd /root/BTCPayNode
 git clone https://github.com/gradientskier/btcpayserver-docker.git
+cd /root/BTCPayNode/btcpayserver-docker
+git checkout arm64-bullseye-prod
 ```
 
 Create the setup icon.
