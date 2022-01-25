@@ -18,7 +18,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: "phi payments"
+title: "φ payments"
 
 email: your-email@example.com
 
@@ -78,9 +78,9 @@ exclude:
   - 'speeches'
 
 author:
-  name: "phi solutions"
+  name: "Pi Hosting Inventions"
   avatar: "https://via.placeholder.com/350x350"
-  bio: "Repos of self-hosting solutions for the Raspberry Pi" # Note: Markdown is allowed
+  bio: "Open source repos of self-hosting solutions for Raspberry Pi" # Note: Markdown is allowed
   location: "We ♥ Italy"
   links:
     - label: "Website"
