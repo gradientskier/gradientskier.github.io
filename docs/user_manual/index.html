@@ -281,7 +281,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-cog"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#procedures">Procedures</a><ul><li><a href="#perform-a-system-upgrade">Perform a system upgrade</a></li><li><a href="#change-the-keyboard-layout">Change the keyboard layout</a></li><li><a href="#backuprestore-migrate-blocks-chainstate-and-electrs-db-from-another-drive">Backup/restore: migrate blocks, chainstate and electrs db from another drive</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a><ul><li><a href="#docker-containers-do-not-stop-correctly">Docker containers do not stop correctly</a></li><li><a href="#bitcoind-container-do-not-start-correctly">Bitcoind container do not start correctly</a></li><li><a href="#postgres-container-does-not-start-after-restoring-an-arm32-backup-onto-a-arm64-image">Postgres container does not start after restoring an arm32 backup onto a arm64 image</a></li></ul></li></ul>
+              <ul class="toc__menu"><li><a href="#procedures">Procedures</a><ul><li><a href="#perform-a-system-upgrade">Perform a system upgrade</a></li><li><a href="#change-the-keyboard-layout">Change the keyboard layout</a></li><li><a href="#install-the-node-certificate-on-windows-10">Install the node certificate on Windows 10</a></li><li><a href="#edit-the-hosts-file-on-windows-10">Edit the hosts file on Windows 10</a></li><li><a href="#backuprestore-migrate-blocks-chainstate-and-electrs-db-from-another-drive">Backup/restore: migrate blocks, chainstate and electrs db from another drive</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a><ul><li><a href="#docker-containers-do-not-stop-correctly">Docker containers do not stop correctly</a></li><li><a href="#bitcoind-container-do-not-start-correctly">Bitcoind container do not start correctly</a></li><li><a href="#postgres-container-does-not-start-after-restoring-an-arm32-backup-onto-a-arm64-image">Postgres container does not start after restoring an arm32 backup onto a arm64 image</a></li></ul></li></ul>
 
             </nav>
           </aside>
@@ -301,6 +301,56 @@ reboot
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>mkinitramfs <span class="nt">-o</span> /boot/initramfs.gz
 </code></pre></div></div>
+
+<h3 id="install-the-node-certificate-on-windows-10">Install the node certificate on Windows 10</h3>
+
+<ol>
+  <li>
+    <p><a href="https://github.com/FiloSottile/mkcert/releases/download/v1.4.3/mkcert-v1.4.3-windows-amd64.exe">Download mkcert from github.com</a></p>
+  </li>
+  <li>
+    <p>Rename downloaded file to mkcert.exe and copy to <code class="language-plaintext highlighter-rouge">C:\Users\&lt;username&gt;\AppData\Local\Microsoft\WindowsApps</code></p>
+  </li>
+  <li>
+    <p>copy the rootCA to <code class="language-plaintext highlighter-rouge">C:\Users\&lt;username&gt;\AppData\Local\mkcert\&lt;domain&gt;\rootCA.pem</code></p>
+  </li>
+  <li>
+    <p>Open powershell</p>
+  </li>
+</ol>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$</span><span class="nn">env</span><span class="p">:</span><span class="nv">CAROOT</span><span class="o">=</span><span class="s2">"C:\Users\&lt;username&gt;\AppData\Local\mkcert\&lt;domain&gt;"</span><span class="w">
+</span><span class="n">mkcert</span><span class="w"> </span><span class="nt">-install</span><span class="w">
+</span></code></pre></div></div>
+
+<ol>
+  <li>Verify certificate is in the list with Windows -&gt; Run -&gt; certmgr.msc</li>
+</ol>
+
+<p>Certificates -&gt; Current user -&gt; Trusted Root Certification Authorities -&gt; Certificates</p>
+
+<h3 id="edit-the-hosts-file-on-windows-10">Edit the hosts file on Windows 10</h3>
+
+<ol>
+  <li>
+    <p>Windows -&gt; Notepad -&gt; Right click -&gt; Run as administrator</p>
+  </li>
+  <li>
+    <p>File -&gt; Open</p>
+  </li>
+  <li>
+    <p>Insert a new line at the end corresponding to the local ip of your node</p>
+  </li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># My node local access
+# &lt;local network ip&gt; &lt;btcpay hostname&gt;
+192.168.1.78      btcpay.local
+</code></pre></div></div>
+
+<ol>
+  <li>File -&gt; Save, Close</li>
+</ol>
 
 <h3 id="backuprestore-migrate-blocks-chainstate-and-electrs-db-from-another-drive">Backup/restore: migrate blocks, chainstate and electrs db from another drive</h3>
 
