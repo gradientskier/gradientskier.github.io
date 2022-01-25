@@ -25,6 +25,41 @@ After changing the keyboard layout, it's important to regenerate the initramfs, 
 sudo mkinitramfs -o /boot/initramfs.gz
 ```
 
+### Install the node certificate on Windows 10
+
+1. [Download mkcert from github.com](https://github.com/FiloSottile/mkcert/releases/download/v1.4.3/mkcert-v1.4.3-windows-amd64.exe)
+
+2. Rename downloaded file to mkcert.exe and copy to `C:\Users\<username>\AppData\Local\Microsoft\WindowsApps`
+
+3. copy the rootCA to `C:\Users\<username>\AppData\Local\mkcert\<domain>\rootCA.pem`
+
+4. Open powershell
+
+```powershell
+$env:CAROOT="C:\Users\<username>\AppData\Local\mkcert\<domain>"
+mkcert -install
+```
+
+5. Verify certificate is in the list with Windows -> Run -> certmgr.msc
+
+Certificates -> Current user -> Trusted Root Certification Authorities -> Certificates
+
+### Edit the hosts file on Windows 10
+
+1. Windows -> Notepad -> Right click -> Run as administrator
+
+2. File -> Open
+
+3. Insert a new line at the end corresponding to the local ip of your node
+
+```
+# My node local access
+# <local network ip> <btcpay hostname>
+192.168.1.78      btcpay.local
+```
+
+4. File -> Save, Close
+
 ### Backup/restore: migrate blocks, chainstate and electrs db from another drive
 
 Gather info:
