@@ -17,6 +17,8 @@ apt full-upgrade
 reboot
 ```
 
+<span style="color:red">**WARNING:**</span> Always reboot after an upgrade otherwise issues during boot may happen.
+
 ### Change the keyboard layout
 
 After changing the keyboard layout, it's important to regenerate the initramfs, otherwise the new keyboard layout won't work for the drive encryption password.
