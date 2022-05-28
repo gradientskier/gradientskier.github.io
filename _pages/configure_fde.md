@@ -302,11 +302,14 @@ reboot
 
 # Configure the operating system
 
-From a (likely remote) desktop:
+From a bash, logged in as pi user:
 
 1. do a sudo raspi-config
 - enable desktop boot without autologin: raspi-config -> boot options -> desktop/cli -> Desktop
 - change the hostname: raspi-config -> Network options -> hostname -> btcpay
+- reboot 
+
+From a remote desktop (NB: ensure you are not logged in as pi user):
 
 2. Do not ask executable files: File manager, Edit, Preferences, General, Check "Do not ask option on executable launch"
 
