@@ -39,8 +39,8 @@ The MicroSD can be used to contain backups that are very useful to restore the d
 
 Now you can install the operating system to the SSD. You can use our custom operating system image, that we have prepared for you.
 
-* [Download the custom Raspberry Pi OS from here (14GB)](https://mega.nz/file/g9cRRKrT#5VIP4sqHWRA628hWSZDgOkih8_reU3-FDRf6_7KAt84).
-* Verify that SHA256 of the downloaded file is E720780C418D9302B743A11918EDC9150BF1363A269A229A2BB53F04D02FF692
+* [Download the custom Raspberry Pi OS from here (14GB)](https://mega.nz/file/xtdVSSBL#kErbuXf8ZOrlSmYZpoBfMnr56msQCEkrBRgY_HbIdQI).
+* Verify that SHA256 of the downloaded file is BBD593D3F5157F0BE1DA6108F2FBBA6013BE8B2B0188EC3243F6685D8014703D
 
 Lean how to flash a custom image in the video tutorial.
 

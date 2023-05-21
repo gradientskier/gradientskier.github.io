@@ -552,19 +552,27 @@ reboot
 
 <h1 id="configure-the-operating-system">Configure the operating system</h1>
 
-<p>From a (likely remote) desktop:</p>
+<p>From a bash, logged in as pi user:</p>
 
 <ol>
   <li>do a sudo raspi-config
     <ul>
       <li>enable desktop boot without autologin: raspi-config -&gt; boot options -&gt; desktop/cli -&gt; Desktop</li>
       <li>change the hostname: raspi-config -&gt; Network options -&gt; hostname -&gt; btcpay</li>
+      <li>reboot</li>
     </ul>
   </li>
+</ol>
+
+<p>From a remote desktop (NB: ensure you are not logged in as pi user):</p>
+
+<ol>
   <li>
     <p>Do not ask executable files: File manager, Edit, Preferences, General, Check “Do not ask option on executable launch”</p>
   </li>
-  <li>Turn off bluetooth</li>
+  <li>
+    <p>Turn off bluetooth</p>
+  </li>
 </ol>
 
 <h1 id="install-btcpayserver">Install btcpayserver</h1>
@@ -767,7 +775,7 @@ lsinitramfs /boot/initramfs.gz | <span class="nb">grep </span>crypt
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2022 φ payments. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2023 φ payments. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>
